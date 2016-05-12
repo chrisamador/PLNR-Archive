@@ -18,38 +18,41 @@
  */
 
 // Namespace
+(function(){
+
 var PLNRAPP = function(){
 
-	var today = moment();
-
-	this.startDate = today.day('Sunday');
-	this.endDate = today.day('Saturday');
-
-	this.nextWeek = function(){
-		console.log('its next week yo');
-	};
-	this.prevWeek = function(){
-		console.log('its last week yo');
-	};
-
-	return {
-		Config : {
-			today : today
-		},
-		WeekInView: {
-			mStartDate: this.startDate,
-			mEndDate : this.endDate,
-			nextWeek : this.nextWeek,
-			prevWeek : this.prevWeek,
-		},
-		View : {},
-		Model : {},
-		Collection : {},
-	}
+		this.Config = {};
+		this.APP= {
+			baseDate : moment().startOf('day'),
+			startDate: function(){
+				return moment(this.baseDate).day('Sunday');
+			},
+			endDate : function(){
+				return moment(this.baseDate).day('Saturday');
+			},
+			nextWeek : function(){
+				this.baseDate = moment(this.baseDate).add(7,'days');
+			},
+			prevWeek : function(){
+				this.baseDate = moment(this.baseDate).subtract(7,'days');
+			},
+			setBaseDate : function(dateString){
+				this.baseDate = moment(dateString, "MM-DD-YYYY");
+			},
+			getBaseDate : function(){
+				return this.baseDate;
+			}
+		};
+		this.View = {};
+		this.Model = {};
+		this.Collection = {};
 }
 
-var PLNR = new PLNRAPP();
+window.PLNR = new PLNRAPP();
 
+
+}())
 
 
 /**
@@ -108,12 +111,13 @@ var singleProjectCollection = new PLNR.Collection.SingleProjectColl([
 
 // Header
 PLNR.View.DateSelector = Backbone.View.extend({
-	html: Utility.template('date-selector__template'),
+	className: 'date-selector__block',
+	html: Utility.template('date-selector__block--template'),
 	render: function(){
 		this.$el.empty();
 		this.$el.html(this.html({
-			startDate: PLNR.WeekInView.mStartDate.format('dddd, MMMM Do YYYY'),
-			endDate: PLNR.WeekInView.mEndDate.format('dddd, MMMM Do YYYY')
+			startDate: PLNR.APP.startDate().format('ddd, MMM D'),
+			endDate: PLNR.APP.endDate().format('ddd, MMM D')
 		}));
 		return this
 	},
@@ -123,31 +127,31 @@ PLNR.View.DateSelector = Backbone.View.extend({
 	clicked : function(e){
 		e.preventDefault();
 		console.log('it\'s been clicked');
-		PLNR.WeekInView.nextWeek();
+		PLNR.APP.nextWeek();
 	}
 });
 
 PLNR.View.DateSelectorHeader = Backbone.View.extend({
 	tagName: 'header',
-	className: 'date-selector__block',
-	html: $('#date-selector-header__template').html(),
+	className: 'header__block',
+	html: $('#header__block--template').html(),
 	events : {
 		'click a' : 'btnclick'
 	},
 	render: function(){
 		this.$el.html(this.html);
-		this.$el.prepend(new PLNR.View.DateSelector().render().el);
+		this.$el.append(new PLNR.View.DateSelector().render().el);
 		return this;
 	}
 });
 
 
-// App Calendar View
-PLNR.View.AppCalView = Backbone.View.extend({
-	tagName: 'ul',
+PLNR.View.AppCalWeekView = Backbone.View.extend({
+	className : 'app-cal-view__block',
 	daysToDisplay : 7,
-	html : '',
+	html: Utility.template('app-cal-view__block-template'),
 	render : function (){
+		var block = this.$el.find('#app-week-view__block');
 		// Output the day-titles
 
 		// Output view-hours
@@ -162,31 +166,24 @@ PLNR.View.AppCalView = Backbone.View.extend({
 	}
 })
 
-PLNR.View.MainView = Backbone.View.extend({
-	tagName : 'main',
-	className : 'app-cal-view__block',
+// App Calendar View
+PLNR.View.AppView = Backbone.View.extend({
+	collection: singleProjectCollection,
+	// className : 'app-cal-view__block',
 	render : function(){
-		// Output the Date Header
-		var dateSelectorHeader = new PLNR.View.DateSelectorHeader();
-		this.$el.html(dateSelectorHeader.render().el);
+
+		// Output the Header
+		this.$el.html(new PLNR.View.DateSelectorHeader().render().el);
 
 		// Output the App Calendar View
-		var weekView = new PLNR.View.AppCalView();
-		this.$el.append(weekView.render().el);
+		this.$el.append(new PLNR.View.AppCalWeekView().render().el);
 
 		// Output the Task on the board
+
 		return this;
-	}
-});
-
-PLNR.View.WeekCalSingleHour = Backbone.View.extend({
-	tagName : 'li',
-
-	className : 'single-day__hour',
-	render : function(){
-
-		this.$el.html(this.html);
-		return this;
+	},
+	events : {
+		'click a' : 'render'
 	}
 });
 
@@ -199,9 +196,9 @@ PLNR.View.WeekCalSingleHour = Backbone.View.extend({
 
 (function(){
 
-	var PLNRInit = new PLNR.View.MainView();
+	var APP = new PLNR.View.AppView();
 
-	$('#app-cal-view__block').html(PLNRInit.render().el)
+	$('body').prepend(APP.render().el);
 
 }());
 
