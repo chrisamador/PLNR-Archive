@@ -34,386 +34,51 @@
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please
 		<a href = "http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
+	<div id="loading" class="loading"></div>
 	<header class="header__block">
 		<div class="app-header__block">
 			<h1 style="display:inline-block;margin: 0;margin-right: 14px;">PLNR</h1>
 			<p style="display:inline-block;margin:0;">Plan your week, track your time.</p>
 		</div>
-		<div class="date-selector__block">
+	</header>
+	<div id="app-cal-view__block">
+
+	</div>
+
+	<script type="text/template" id="date-selector-header__template">
 			<div class="container">
-				<h5 class="date-selector__today">
-					<a href="#" class="date-selector__todaybtn">Today</a>
-				</h5>
-				<div class="date-selector__timeline">
-					<div class="week-selector-timeline__block">
-						<a href="#" class="btn week-selector-timeline--lastbtn">
-							<img src="img/icon/icon-arrow_left.svg" alt="">
-						</a>
-						<h2 class="week-selector-timeline--heading">March 7 - March 14</h2>
-						<a href="#" class="week-selector-timeline--nextbtn">
-							<img src="img/icon/icon-arrow_right.svg" alt="">
-						</a>
-					</div>
-				</div>
 				<div class="date-selector__options">
 					<a href="#" class="date-selector__optionbtn">
 						<img src="/img/icon/icon-more-options.svg" alt="">
 					</a>
 				</div>
 			</div>
-		</div>
-	</header>
-	<main class="app-cal-view__block">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="app-week-view__block">
-						<div class="app-week-view__day-titles">
-							<ul class="week-day-titles__block">
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Sun</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Mon</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Tue</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Wed</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Thu</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Fri</h5></li>
-								<li class="week-day-titles__day"><h5 class="week-day-titles__heading">Sat</h5></li>
-							</ul>
-						</div>
-						<div class="app-week-view__view-hours">
-							<ul class="view-hours__block">
-								<li class="view-hours__hour">12 AM</li>
-								<li class="view-hours__hour">1 AM</li>
-								<li class="view-hours__hour">2 AM</li>
-								<li class="view-hours__hour">3 AM</li>
-								<li class="view-hours__hour">4 AM</li>
-								<li class="view-hours__hour">5 AM</li>
-								<li class="view-hours__hour">6 AM</li>
-								<li class="view-hours__hour">7 AM</li>
-								<li class="view-hours__hour">8 AM</li>
-								<li class="view-hours__hour">9 AM</li>
-								<li class="view-hours__hour">10 AM</li>
-								<li class="view-hours__hour">11 AM</li>
-								<li class="view-hours__hour">12 PM</li>
-								<li class="view-hours__hour">1 PM</li>
-								<li class="view-hours__hour">2 PM</li>
-								<li class="view-hours__hour">3 PM</li>
-								<li class="view-hours__hour">4 PM</li>
-								<li class="view-hours__hour">5 PM</li>
-								<li class="view-hours__hour">6 PM</li>
-								<li class="view-hours__hour">7 PM</li>
-								<li class="view-hours__hour">8 PM</li>
-								<li class="view-hours__hour">9 PM</li>
-								<li class="view-hours__hour">10 PM</li>
-								<li class="view-hours__hour">11 PM</li>
-							</ul>
-						</div>
-						<div class="app-week-view__week-view">
-							<ul class="week-view__block">
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour __top-left"></li>
-										<li data-hour="00" class="single-day__hour 12 am"></li>
-										<li class="single-day__hour 1 am"></li>
-										<li class="single-day__hour 2 am"></li>
-										<li class="single-day__hour 3 am"></li>
-										<li class="single-day__hour 4 am"></li>
-										<li class="single-day__hour 5 am"></li>
-										<li class="single-day__hour 6 am"></li>
-										<li class="single-day__hour 7 am"></li>
-										<li class="single-day__hour 8 am"></li>
-										<li class="single-day__hour 9 am"></li>
-										<li class="single-day__hour 10 am"></li>
-										<li class="single-day__hour 11 am"></li>
-										<li class="single-day__hour 12 pm"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour __bottom-left"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-									</ul>
-								</li>
-								<li class="week-view__day">
-									<ul class="single-day__block">
-										<li class="single-day__hour __top-right"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour"></li>
-										<li class="single-day__hour __bottom-right"></li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-	<div >
-		<form action="" class="module-new-project__block">
-			<header class="module-new-project__header">
-				<div class="mnp-header__module-title">
-					<h5 class="mnp-header__heading"> <img class="icon" src="/img/icon/icon-add_box.svg" alt=""> New Task</h5>
-				</div>
-				<div class="mnp-header__close">
-					<a href="#" class="mnp-header__closebtn">
-						<img src="/img/icon/icon-cross.svg" alt="close">
+	</script>
+
+	<script type="text/template" id="date-selector__template">
+			<h5 class="date-selector__today">
+				<a href="#" data-click-action="todaybtn" class="date-selector__todaybtn">Today</a>
+			</h5>
+			<div class="date-selector__timeline">
+				<div class="week-selector-timeline__block">
+					<a href="#" class="week-selector-timeline--lastbtn btn" data-click-action="lastbtn">
+						<img src="img/icon/icon-arrow_left.svg" alt="">
+					</a>
+					<h2 class="week-selector-timeline--heading"> <%= startDate %> - <%= endDate %> </h2>
+					<a href="#" class="week-selector-timeline--nextbtn btn" data-click-action="nextbtn">
+						<img src="img/icon/icon-arrow_right.svg" alt="">
 					</a>
 				</div>
-			</header>
-			<main class="module-new-project__body">
-				<div class="mnp-dates__block">
-					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__start-data"> Sun, Feb 2</h6>
-						<div href="#" class="mnp-dates__more">
-							<input type="hidden" class="datepicker" id="start-date" name="start-date" />
-						</div>
-					</div>
-					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__end-data">Sun, Feb 2</h6>
-						<div class="mnp-dates__more">
-							<input type="hidden" class="datepicker" id="end-date" name="end-date" />
-						</div>
-					</div>
-				</div>
-				<div class="mnp-times__block">
-					<div class="mnp-times__link mnp-times__start">
-						<!-- <h2 class="mnp-time__data">3:00 PM</h2> -->
-						<select class="mnp-times__select" name="start-time" id="start-time">
-							<option value="01">1:00 PM</option>
-							<option value="02">02</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-						</select>
-						<!-- <label class="mnp-times__label" for="start-time">Start Time</label> -->
-					</div>
-					<div class="mnp-times__link">
-						<!-- <h2 class="mnp-time__data">4:00 PM</h2> -->
-						<select class="mnp-times__select" name="end-time" id="end-time">
-							<option value="01">2:00 PM</option>
-							<option value="02">2:00 PM</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-						</select>
-						<!-- <label class="mnp-times__label" for="end-time">End Time</label> -->
-					</div>
-				</div>
-				<div class="mnp-task__block">
-					<select name="task-name" id="task-name">
-						<option value="">Select a Project</option>
-						<option value="1">Task 1</option>
-						<option value="2">Task 2</option>
-						<option value="3">Task 3</option>
-						<option value="4">Task 4</option>
-						<option value="5">Task 5</option>
-					</select>
-				</div>
-				<ul class="mnp-task-details__block">
-					<li class="mnp-task-details__years">
-						<h5 class="mnp-task-detail__data">200 Hrs</h5>
-						<span class="mnp-task-details__label">Year</span>
-					</li>
-					<li class="mnp-task-details__month">
-						<h5 class="mnp-task-detail__data">22 Hrs</h5>
-						<span class="mnp-task-details__label">Month</span>
-					</li>
-					<li class="mnp-task-details__week">
-						<h5 class="mnp-task-detail__data">5 Hrs</h5>
-						<span class="mnp-task-details__label">Week</span>
-					</li>
-				</ul>
-			</main>
-			<footer class="module-new-project__footer">
-				<div class="mnp-footer__cta">
-					<button id="" class="mnp-footer__ctabtn"> Add </button>
-				</div>
-			</footer>
-		</form>
-	</div>
-
-	<script type="text/template" id="header__block">
-			<h1>Im the header!</h1>
+			</div>
 	</script>
 
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="/bower_components/underscore/underscore-min.js"></script>
 	<script src="/bower_components/backbone/backbone-min.js"></script>
+	<script src="/bower_components/moment/moment.js"></script>
+
+
 	<script src="/js/app.js"></script>
 
 </body>

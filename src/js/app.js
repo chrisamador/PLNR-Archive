@@ -18,12 +18,38 @@
  */
 
 // Namespace
-var PLNR = {
-	View : {},
-	Model : {},
-	Collection : {},
-	Utility : {},
+var PLNRAPP = function(){
+
+	var today = moment();
+
+	this.startDate = today.day('Sunday');
+	this.endDate = today.day('Saturday');
+
+	this.nextWeek = function(){
+		console.log('its next week yo');
+	};
+	this.prevWeek = function(){
+		console.log('its last week yo');
+	};
+
+	return {
+		Config : {
+			today : today
+		},
+		WeekInView: {
+			mStartDate: this.startDate,
+			mEndDate : this.endDate,
+			nextWeek : this.nextWeek,
+			prevWeek : this.prevWeek,
+		},
+		View : {},
+		Model : {},
+		Collection : {},
+	}
 }
+
+var PLNR = new PLNRAPP();
+
 
 
 /**
@@ -32,7 +58,9 @@ var PLNR = {
  *
  */
 
-PLNR.Utility.template = function(id){
+var Utility = {}
+
+Utility.template = function(id){
 	return _.template($('#'+id).html());
 }
 
@@ -79,25 +107,56 @@ var singleProjectCollection = new PLNR.Collection.SingleProjectColl([
  */
 
 // Header
-PLNR.View.DateHeader = Backbone.View.extend({
-	tagName: 'header',
-	html: PLNR.Utility.template('header__block'),
+PLNR.View.DateSelector = Backbone.View.extend({
+	html: Utility.template('date-selector__template'),
 	render: function(){
-		this.$el.html(this.html());
-		return this;
+		this.$el.empty();
+		this.$el.html(this.html({
+			startDate: PLNR.WeekInView.mStartDate.format('dddd, MMMM Do YYYY'),
+			endDate: PLNR.WeekInView.mEndDate.format('dddd, MMMM Do YYYY')
+		}));
+		return this
+	},
+	events : {
+		'click a' : 'clicked'
+	},
+	clicked : function(e){
+		e.preventDefault();
+		console.log('it\'s been clicked');
+		PLNR.WeekInView.nextWeek();
 	}
-
 });
 
-// Week View
-PLNR.View.WeekView = Backbone.View.extend({
+PLNR.View.DateSelectorHeader = Backbone.View.extend({
+	tagName: 'header',
+	className: 'date-selector__block',
+	html: $('#date-selector-header__template').html(),
+	events : {
+		'click a' : 'btnclick'
+	},
+	render: function(){
+		this.$el.html(this.html);
+		this.$el.prepend(new PLNR.View.DateSelector().render().el);
+		return this;
+	}
+});
+
+
+// App Calendar View
+PLNR.View.AppCalView = Backbone.View.extend({
 	tagName: 'ul',
-	daysInView : 7,
+	daysToDisplay : 7,
+	html : '',
 	render : function (){
-		var daysInView = this.daysInView;
-		while(daysInView){
+		// Output the day-titles
+
+		// Output view-hours
+
+		// Output the weekview
+		var daysToDisplay = this.daysToDisplay;
+		while(daysToDisplay){
 			console.log('print day');
-			daysInView--;
+			daysToDisplay--;
 		}
 		return this;
 	}
@@ -105,17 +164,17 @@ PLNR.View.WeekView = Backbone.View.extend({
 
 PLNR.View.MainView = Backbone.View.extend({
 	tagName : 'main',
-	id : 'week-cal',
 	className : 'app-cal-view__block',
 	render : function(){
 		// Output the Date Header
-		var dateHeader = new PLNR.View.DateHeader();
-		this.$el.html(dateHeader.render().el);
+		var dateSelectorHeader = new PLNR.View.DateSelectorHeader();
+		this.$el.html(dateSelectorHeader.render().el);
 
-		// Output the Week View
-		var weekView = new PLNR.View.WeekView();
+		// Output the App Calendar View
+		var weekView = new PLNR.View.AppCalView();
 		this.$el.append(weekView.render().el);
 
+		// Output the Task on the board
 		return this;
 	}
 });
@@ -138,9 +197,16 @@ PLNR.View.WeekCalSingleHour = Backbone.View.extend({
  *
  */
 
-var PLNRInit = new PLNR.View.MainView();
+(function(){
 
-$('#PLNR-APP').html(PLNRInit.render().el)
+	var PLNRInit = new PLNR.View.MainView();
+
+	$('#app-cal-view__block').html(PLNRInit.render().el)
+
+}());
+
+
+
 
 /**
  *
