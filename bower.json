@@ -1,0 +1,33 @@
+{
+  "name": "plnr-app",
+  "description": "A simple planner application to manage projects and project times",
+  "main": "gulpfile.js",
+  "authors": [
+    "Chris Amador"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "planner",
+    "plnr",
+    "js",
+    "app"
+  ],
+  "homepage": "https://github.com/chrisamador/PLNR",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "^1.3.3"
+  },
+  "devDependencies": {
+    "jquery": "^2.2.3",
+    "requirejs": "^2.2.0",
+    "bootstrap": "^3.3.6",
+    "jquery-ui": "jqueryui#^1.11.4"
+  }
+}

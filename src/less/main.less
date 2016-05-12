@@ -1,0 +1,622 @@
+/*=========================================
+=            Table of Contents            =
+=========================================*/
+/*
+
+	_Framework_Imports
+	_Variables
+		_Colors
+		_Typography
+		_Misc
+	_MediaQuerysReference
+	_GlobalStyles
+	_Mixins
+	_Header
+	_Module_Work_Time
+	_Page
+		-> main
+		-> sidebar
+	_Footer
+
+
+*/
+
+/* --------------------------------
+	_Framework_Imports
+----------------------------------*/
+
+@import "bootstrap";
+@import "jqueryui";
+
+/* --------------------------------
+	_Variables
+----------------------------------*/
+
+/* --------------------------------
+	_Colors
+----------------------------------*/
+
+// Blue
+@blue: 					#4C69A3;
+@blue-light: 			#ABBCDC;
+@blue-dark: 			#36528A;
+
+// Green
+@green: 					#F0FCE0;
+@green-light: 			#F8FFEE;
+@green-dark: 			#A3B58C;
+
+// Lavendar
+@lavendar: 				#DFE9F8;
+@lavendar-light: 		#E9F2FF;
+@lavendar-dark: 		#A5BFE7;
+
+// Sky Blue
+@skyblue: 				#86CAF4;
+@skyblue-light: 		#B3E2FF;
+@skyblue-dark: 		#5EAAD9;
+
+// Orange
+@orange: 				#F7BB7D;
+@orange-light: 		#FFEEDC;
+@orange-dark: 			#DC9852;
+
+// Iron
+@iron: 					#D7D7D7;
+@iron-light:         #ECECEC;
+@iron-dark: 			#BCBCBC;
+
+@gray-base:          #000;
+@gray-darker:        #757575;
+@gray-dark:          #9B9B9B;
+@gray:               #DEDEDE;
+@gray-light:         lighten(@gray-base, 46.7%); // #777
+@gray-lighter:       lighten(@gray-base, 93.5%); // #eee
+
+@brand-primary:       @blue;
+@brand-success:       #5cb85c;
+@brand-info:          #5bc0de;
+@brand-warning:       #f0ad4e;
+@brand-danger:        #d9534f;
+
+//** Background color for `<body>`.
+@body-bg:               @green;
+//** Global text color on `<body>`.
+@text-color:            @gray-darker;
+//** Global textual link color.
+@link-color:            @brand-primary;
+//** Link hover color set via `darken()` function.
+@link-hover-color:      darken(@link-color, 15%);
+//** Link hover decoration.
+@link-hover-decoration: underline;
+
+/* --------------------------------
+   _Typography
+----------------------------------*/
+
+@font-family-sans-serif:  "Open Sans", sans-serif;
+@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-base:        @font-family-sans-serif;
+@font-size-base:          14px;
+@1rem: 1.1428571429em;
+@2rem: 2.2857142857em;
+@headings-font-family:  'Montserrat', sans-serif;
+
+@font-size-h1:            floor((@font-size-base * 2.6)); // ~36px
+@font-size-h2:            26px;
+@font-size-h3:            ceil((@font-size-base * 1.7)); // ~24px
+@font-size-h4:            ceil((@font-size-base * 1.25)); // ~18px
+@font-size-h5:            @font-size-base;
+@font-size-h6:            ceil((@font-size-base * 0.85)); // ~12px
+
+h5{
+
+}
+
+/* --------------------------------
+   _Misc
+----------------------------------*/
+
+// @grid-gutter-width: 0;
+@border-radius-base : 5px;
+@btn-border-radius-base: 0;
+
+html{
+	background-color: @green;
+}
+
+.container{
+	width: 100%;
+	max-width: 1170px;
+}
+
+/* --------------------------------
+   _Header
+----------------------------------*/
+
+.mx-headerbtn{
+	&:hover{
+		background-color: @lavendar-light;
+	}
+}
+.header__block{
+
+}
+
+.app-header__block{
+	background-color: #444444;
+	padding: 1em;
+
+	h1{
+
+	}
+}
+
+.date-selector__block{
+	text-align: center;
+	background-color: @green-light;
+	color: @green-dark;
+	padding: .5em 0;
+}
+.date-selector__today{
+	margin: 0;
+}
+.date-selector__todaybtn{
+	.btn();
+	color: @green-dark;
+}
+.date-selector__timeline{
+
+}
+.week-selector-timeline__block{
+
+}
+.week-selector-timeline--lastbtn,
+.week-selector-timeline--heading,
+.week-selector-timeline--nextbtn{
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
+
+	img{
+		margin-top: -.25em;
+	}
+}
+
+.week-selector-timeline--lastbtn{
+	.btn();
+
+	.mx-headerbtn();
+}
+.week-selector-timeline--heading{
+	margin: 0 .5em;
+}
+.week-selector-timeline--nextbtn{
+	.btn();
+	.mx-headerbtn();
+}
+.date-selector__options{
+
+}
+.date-selector__optionbtn{
+	.btn();
+	.mx-headerbtn();
+}
+
+/* --------------------------------
+   _Main
+----------------------------------*/
+.mx-ulrest{
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+.app-cal-view__block{
+	font-family: @headings-font-family;
+
+}
+.app-week-view__block{
+	color: @green-dark;
+	position: relative;
+	padding-bottom: 1em;
+
+	// flex box
+	display: flex;
+	flex-flow: row wrap;
+	height: 100vh;
+	align-content: flex-start;
+	min-height: 50em;
+}
+
+.app-week-view__day-titles{
+	padding-left: 5em;
+
+	// flex box
+	flex: 100%;
+	height: 5%
+}
+.week-day-titles__block{
+	.mx-ulrest();
+	.clearfix();
+}
+.week-day-titles__day{
+	float: left;
+	width: 14.285714286%;
+	text-align: center;
+}
+.week-day-titles__heading{
+	text-transform: uppercase;
+}
+.app-week-view__week-view{
+	height: 95%;
+
+	// flex box
+	display: flex;
+	flex: 1;
+}
+
+.week-view__block{
+	.mx-ulrest();
+	.clearfix();
+	border: 1px solid #E2F2CE;
+	overflow: hidden;
+	border-radius: @border-radius-base;
+	position: relative;
+
+	// flex box
+	display: flex;
+   flex-direction: row;
+   flex: 1;
+}
+.week-view__day{
+	// float: left;
+	// width: 14.285714286%;
+	flex: 1;
+   display: flex;
+}
+.single-day__block{
+	.mx-ulrest();
+
+	// flex box
+	display: flex;
+   flex: 1;
+   flex-flow: column nowrap;
+}
+.single-day__hour{
+	background-color: white;
+	border: 1px solid #E2F2CE;
+	position: relative;
+	cursor: pointer;
+
+	// flex box
+	flex: 1;
+
+	transition: box-shadow 250ms ease;
+
+	&:hover{
+		background-color: @green;
+		box-shadow: 0 3px 10px rgba(0,0,0,.15);
+		z-index: 1;
+	}
+	&:before{
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 50%;
+		border-bottom: dashed 1px @green;
+	}
+
+	&.__top-right{
+		border-radius: 0 @border-radius-base 0 0;
+	}
+	&.__top-left{
+		border-radius: @border-radius-base 0 0 0;
+	}
+	&.__bottom-left{
+		border-radius: 0 0 0 @border-radius-base;
+	}
+	&.__bottom-right{
+		border-radius: 0 0 @border-radius-base 0;
+	}
+
+}
+
+.app-week-view__view-hours{
+	position: relative;
+
+	// flex box
+	flex: 0 0 5em;
+	display: flex;
+	padding-right: .75em;
+}
+.view-hours__block{
+	.mx-ulrest();
+	text-align: right;
+
+	// flex box
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.view-hours__hour{
+	// flex box
+	flex: 1;
+
+}
+
+/* --------------------------------
+   _Module_Work_Time
+----------------------------------*/
+
+.module-wt__block{
+	max-width: 400px;
+	border-radius: @border-radius-base;
+	overflow: hidden;
+	font-family: @headings-font-family;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
+}
+.module-wt__header{
+	background-color: @blue;
+	display: flex;
+}
+.wt-header__module-title{
+	flex: 2;
+	color: @skyblue;
+	padding: 1em 1.25em;
+	cursor: move;
+}
+.wt-header__close{
+	flex: 0 0 49px;
+	text-align: right;
+}
+.wt-header__heading{
+	margin: 0;
+   line-height: 1.5;
+}
+.wt-header__closebtn{
+	.btn();
+	display: inline-block;
+	padding: 1em 1.25em;
+	background-color: #EC99A4;
+
+	&:hover,&:focus{
+		background-color: darken(#EC99A4,10%);
+	}
+}
+.module-wt__body{
+	background-color: white;
+}
+.module-wt__label{
+
+}
+// Dates
+.wt-dates__block{
+	background-color: @green;
+
+	display: flex;
+	text-align: center;
+}
+.wt-dates__link{
+	// .btn();
+	color: @green-dark;
+	flex: 1;
+	padding: 1em;
+	cursor: pointer;
+	position: relative;
+
+	&:hover,&:focus{
+		background-color: #D6E6C1;
+		color: @green-dark;
+	}
+
+}
+.wt-dates__start{
+
+}
+.wt-dates__start-data{
+	margin: 0;
+}
+
+.wt-dates__end-data{
+	margin: 0;
+}
+.wt-dates__more{
+	margin-top: .5em;
+	height: 4px;
+	position: relative;
+	z-index: 1;
+
+	img{
+		vertical-align: top;
+	}
+
+}
+
+.ui-widget.ui-datepicker{
+	font-family: @headings-font-family;
+	background-color: @green;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	padding: 1em;
+}
+
+.ui-datepicker td span,
+.ui-datepicker td a{
+	text-align: center;
+	color: #757575;
+
+	&:hover{
+		background-color: @orange-light;
+	}
+}
+.ui-datepicker-prev,
+.ui-datepicker-next{
+	background-color: @green-dark;
+	border-radius: 100%;
+	cursor: pointer;
+	position: relative;
+
+	&:hover{
+		background-color: @skyblue;
+	}
+
+	&:after{
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 100%;
+		background-position: center center;
+		background-repeat: no-repeat;
+		left: 0;
+	}
+}
+
+.ui-datepicker-prev:after{
+	background-image: url(/img/icon/icon-chevron_left.svg);
+}
+
+.ui-datepicker-next:after{
+	background-image: url(/img/icon/icon-chevron_right.svg);
+}
+
+// Times
+.wt-times__block{
+	display: flex;
+	text-align: center;
+
+}
+.wt-times__link{
+	flex: 1;
+	color: @green-dark;
+	position: relative;
+
+	.ui-state-hover{
+		background-color: #FAFAFA;
+
+	}
+}
+.wt-times__start{
+	border-right: 1px solid @green;
+}
+.wt-time__data{
+	letter-spacing: -1px;
+	margin: 0;
+}
+
+.wt-times__select{
+	display: none !important;
+}
+
+.ui-selectmenu-menu .ui-menu{
+	font-family: @headings-font-family;
+	background-color: @green;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	max-height: 14em;
+}
+.ui-menu .ui-menu-item{
+	padding: .5em;
+	color: @green-dark;
+
+	&.ui-state-focus{
+		background-color: #D6E6C1;
+	}
+}
+
+.ui-selectmenu-button{
+	width: 100% !important;
+	display: block;
+
+	&.ui-state-focus{
+		outline-offset: -5px;
+		// outline: none;
+		// background-color: @orange-light;
+	}
+}
+
+.ui-selectmenu-button span.ui-selectmenu-text{
+	padding: 1em;
+	font-size: @font-size-h2;
+	display: block;
+	text-align: center;
+	letter-spacing: -1px;
+
+}
+.ui-selectmenu-button span.ui-icon{
+	height: 2em;
+    width: 2em;
+    // background-color: blue;
+    margin-top: -1em;
+    right: 0.75em;
+    background-image: url(/img/icon/icon-expand_more.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.wt-times__label{
+	position: absolute;
+	display: block;
+	color: @iron;
+	bottom: .10em;
+	left: 50%;
+	margin-left: -33px;
+   user-select: none;
+}
+
+// Task
+.wt-task__block{
+	color: @blue;
+	background-color: @lavendar;
+
+	.ui-state-hover{
+		background-color: @lavendar-dark;
+
+	}
+
+}
+
+// Task Details
+.wt-task-details__block{
+	.mx-ulrest();
+	display: flex;
+	background-color: #FCFCFF;
+	display: none;
+}
+.wt-task-details__years,
+.wt-task-details__month,
+.wt-task-details__week{
+	flex: 1;
+	text-align: center;
+	padding: .75em 1em;
+}
+
+.wt-task-details__month{
+	border-left: 1px solid @lavendar;
+	border-right: 1px solid @lavendar;
+}
+.wt-task-detail__data{
+	margin: 0;
+	color: @orange-dark;
+	font-size: @1rem;
+}
+.wt-task-details__label{
+	color: @iron;
+	text-transform: uppercase;
+}
+
+
+// Footer
+
+.module-wt__footer{
+
+}
+.wt-footer__ctabtn{
+	.button-variant( @green; #A7CC75; @green-dark);
+	display: block;
+	border: 0;
+	padding: 1em;
+	width: 100%;
+}

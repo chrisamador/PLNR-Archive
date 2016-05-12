@@ -1,0 +1,40 @@
+{
+  "name": "plnr-app",
+  "version": "0.0.1",
+  "description": "A simple planner application to manage projects and project times",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://chrisamador@github.com/chrisamador/PLNR.git"
+  },
+  "keywords": [
+    "planner",
+    "plnr",
+    "js",
+    "app"
+  ],
+  "author": "Chris Amador",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisamador/PLNR/issues"
+  },
+  "homepage": "https://github.com/chrisamador/PLNR#readme",
+  "devDependencies": {
+    "connect-livereload": "^0.5.4",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-less": "^3.1.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "gulp-sourcemaps": "^1.6.0"
+  },
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
