@@ -67,6 +67,10 @@ Utility.template = function(id){
 	return _.template($('#'+id).html());
 }
 
+Utility.amountOfDays = function(start, end){
+	return Math.floor(moment.duration(start - end).asDays() + 1)
+}
+
 
 /**
  *
@@ -145,23 +149,76 @@ PLNR.View.DateSelectorHeader = Backbone.View.extend({
 	}
 });
 
+PLNR.View.WeekDayTitles = Backbone.View.extend({
+	tagName: 'ul',
+	className: 'week-day-titles__block',
+	initialize: function(attr){
+		this.config = attr;
+	},
+	// html: _.template('<li class="week-day-titles__day <%= class.join(" ") %> "><h5 class="week-day-titles__heading"><%= title %</h5></li>'),
+	render: function(){
+		var Days;
+		console.log(this.config);
+
+		return this;
+	}
+})
 
 PLNR.View.AppCalWeekView = Backbone.View.extend({
-	className : 'app-cal-view__block',
+	className : 'cal-view__block',
 	daysToDisplay : 7,
+	tagName: 'main',
 	html: Utility.template('app-cal-view__block-template'),
+	initialize : function(attr){
+		var defaults = {
+			amountOfDays : 7,
+			amountOfHours : 24,
+			startDate : PLNR.APP.startDate(),
+			endDate: PLNR.APP.endDate()
+		};
+
+		this.config = _.extend(defaults,attr);
+
+	},
 	render : function (){
-		var block = this.$el.find('#app-week-view__block');
+		var dayTitles = new PLNR.View.WeekDayTitles(this.config);
+
+		// Setup the base markup
+		this.$el.html(this.html());
+
 		// Output the day-titles
+		this.$el.find('.app-week-view__day-titles')
+			.html(dayTitles.render().el);
 
 		// Output view-hours
+		this.$el.find('.app-week-view__view-hours').html(function(hours){
+			var html = ['<ul class="view-hours__block">'];
+
+			for(var i = 0; i < hours; i++){
+				html.push(function(i){
+					var time, suffix;
+					if(i === 0 || i === 12){
+						time = '12';
+						suffix = (i == 0) ? ' AM' : ' PM'
+					}else if(i > 12){
+						time = i - 12;
+						suffix = ' PM';
+					}else{
+						time = i;
+						suffix = ' AM';
+					}
+					return '<li class="view-hours__hour">'+ time + suffix +'</li>';
+				}(i));
+			}
+
+			html.push('</ul>');
+			return html.join('');
+		}(this.config.amountOfHours));
 
 		// Output the weekview
-		var daysToDisplay = this.daysToDisplay;
-		while(daysToDisplay){
-			console.log('print day');
-			daysToDisplay--;
-		}
+		this.$el.find('.app-week-view__week-view')
+			.html();
+
 		return this;
 	}
 })
@@ -169,7 +226,7 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 // App Calendar View
 PLNR.View.AppView = Backbone.View.extend({
 	collection: singleProjectCollection,
-	// className : 'app-cal-view__block',
+	id: 'PLNR',
 	render : function(){
 
 		// Output the Header
@@ -181,9 +238,6 @@ PLNR.View.AppView = Backbone.View.extend({
 		// Output the Task on the board
 
 		return this;
-	},
-	events : {
-		'click a' : 'render'
 	}
 });
 
@@ -198,7 +252,7 @@ PLNR.View.AppView = Backbone.View.extend({
 
 	var APP = new PLNR.View.AppView();
 
-	$('body').prepend(APP.render().el);
+	$('#loading').after(APP.render().el);
 
 }());
 
