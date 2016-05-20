@@ -356,7 +356,9 @@ html{
 	border-radius: @border-radius-base;
 	overflow: hidden;
 	font-family: @headings-font-family;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	z-index: @zindex-popover;
+
 }
 .module-new-project__header{
 	background-color: @blue;
@@ -441,6 +443,7 @@ html{
 	text-align: center;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 	padding: 1em;
+	z-index: @zindex-popover !important;
 }
 
 .ui-datepicker td span,
@@ -509,6 +512,9 @@ html{
 .mnp-times__select{
 	display: none !important;
 }
+.ui-selectmenu-menu{
+	z-index: @zindex-popover;
+}
 
 .ui-selectmenu-menu .ui-menu{
 	font-family: @headings-font-family;
@@ -539,6 +545,7 @@ html{
 
 .ui-selectmenu-button span.ui-selectmenu-text{
 	padding: 1em;
+	padding-right: 1.5em;
 	font-size: @font-size-h2;
 	display: block;
 	text-align: center;

@@ -71,6 +71,15 @@ Utility.amountOfDays = function(start, end){
 	return Math.floor(moment.duration(start - end).asDays() + 1)
 }
 
+Utility.animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+
+$.fn.extend({
+    animateCss: function (animationName) {
+        $(this).addClass('animated ' + animationName).one(Utility.animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+        });
+    }
+});
 
 /**
  *
@@ -113,7 +122,7 @@ var singleProjectCollection = new PLNR.Collection.SingleProjectColl([
  *
  */
 
-// Header
+// Date Selector
 PLNR.View.DateSelector = Backbone.View.extend({
 	className: 'date-selector__block',
 	html: Utility.template('date-selector__block--template'),
@@ -134,20 +143,135 @@ PLNR.View.DateSelector = Backbone.View.extend({
 		PLNR.APP.nextWeek();
 	}
 });
-
+// Header
 PLNR.View.DateSelectorHeader = Backbone.View.extend({
 	tagName: 'header',
 	className: 'header__block',
-	html: $('#header__block--template').html(),
-	events : {
-		'click a' : 'btnclick'
-	},
 	render: function(){
-		this.$el.html(this.html);
+		this.$el.html($('#header__block--template').html());
 		this.$el.append(new PLNR.View.DateSelector().render().el);
 		return this;
 	}
 });
+
+// Form
+
+PLNR.View.NewProjectForm = Backbone.View.extend({
+	html: Utility.template('module-new-project__block--template'),
+	tagName: 'form',
+	id: 'module-new-project',
+	className: 'module-new-project__block',
+	events: {
+		'click .mnp-header__closebtn': 'closebtn'
+	},
+	initialize: function(attr){
+		this.config = attr;
+	},
+	render: function(){
+
+
+		this.$el.html(this.html());
+		this.$el.css({
+			top: '35%',
+			left: '35%',
+			position: 'fixed'
+		});
+		this.$el.animateCss('bounceInDown');
+
+		this.$el.find('.mnp-times__select').selectmenu({
+			position: { my : "top+15", at: "center center" }
+		});
+
+		this.$el.find('#task-name').selectmenu();
+
+		this.$el.find(".datepicker").datepicker({
+		  buttonImage: '/img/icon/icon-more-options.svg',
+		  buttonImageOnly: true,
+		  showOn: 'both',
+		  onSelect : function(dateText, inst){
+		  		console.log(dateText);
+		  		console.log(this);
+		  }
+		});
+
+		this.$el.find('.mnp-dates__link').on('click',function(){
+			$(this).find('.datepicker').datepicker('show');
+		})
+
+		this.$el.draggable({ handle: ".mnp-header__module-title" });
+
+		return this;
+	},
+	closebtn: function(e){
+		e.preventDefault();
+		this.removeModule();
+	},
+	removeModule: function(){
+		var that = this;
+
+		this.$el.one(Utility.animationEnd, function(){
+			that.$el.remove();
+		});
+		this.$el.animateCss('zoomOut');
+
+	}
+})
+
+// Week View
+PLNR.View.WeekView = Backbone.View.extend({
+	tagName: 'ul',
+	html: '',
+	initialize: function(attr){
+		this.config = attr;
+	},
+	events: {
+		'click .single-day__hour' : 'onHourClick'
+	},
+	className: 'week-view__block',
+	render: function(){
+
+
+		var html = [];
+
+		// create days
+		for(var d = 0; d < this.config.amountOfDays; d++){
+			var m = this.config.startDate,
+				dataDay = moment(m).add(d ,'days').format('M-D-YYYY');
+
+			var day = ['<li class="week-view__day"><ul class="single-day__block"  data-day="'+ dataDay +'">'];
+
+			// create hours
+			for(var h = 0; h < this.config.amountOfHours; h++){
+
+				var hour,
+					hourClasses = '',
+					dataHour = h;
+
+					if(d == 0 && h == 0) hourClasses += '  __top-left';
+					if(d == this.config.amountOfDays - 1 && h == 0) hourClasses += '  __top-right';
+					if(d == 0 && h == this.config.amountOfHours - 1) hourClasses += '  __bottom-left';
+					if(d == this.config.amountOfDays - 1 && h == this.config.amountOfHours - 1) hourClasses += '  __bottom-right';
+
+				hour = '<li class="single-day__hour'+ hourClasses +'" data-hour="'+ dataHour +'"></li>';
+
+				day.push(hour);
+
+			}
+			day.push('</ul></li>')
+			html.push(day.join(' '));
+		}
+
+		this.$el.html(html);
+
+		return this;
+	},
+	onHourClick : function(e){
+		console.log($(e.target));
+		$('#module-new-project').remove();
+		$('#PLNR').append(new PLNR.View.NewProjectForm().render().el);
+	}
+
+})
 
 PLNR.View.WeekDayTitles = Backbone.View.extend({
 	tagName: 'ul',
@@ -157,8 +281,16 @@ PLNR.View.WeekDayTitles = Backbone.View.extend({
 	},
 	// html: _.template('<li class="week-day-titles__day <%= class.join(" ") %> "><h5 class="week-day-titles__heading"><%= title %</h5></li>'),
 	render: function(){
-		var Days;
-		console.log(this.config);
+		var html = [];
+
+		for(var d = 0; d < this.config.amountOfDays; d++){
+			var m = this.config.startDate,
+				title = moment(m).add(d ,'days').format('ddd');
+
+			html.push('<li class="week-day-titles__day"><h5 class="week-day-titles__heading">'+ title +'</h5></li>');
+		}
+
+		this.$el.html(html.join(' '));
 
 		return this;
 	}
@@ -168,7 +300,7 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 	className : 'cal-view__block',
 	daysToDisplay : 7,
 	tagName: 'main',
-	html: Utility.template('app-cal-view__block-template'),
+	html: Utility.template('app-cal-view__block--template'),
 	initialize : function(attr){
 		var defaults = {
 			amountOfDays : 7,
@@ -181,7 +313,8 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 
 	},
 	render : function (){
-		var dayTitles = new PLNR.View.WeekDayTitles(this.config);
+		var dayTitles = new PLNR.View.WeekDayTitles(this.config),
+			weekView = new PLNR.View.WeekView(this.config);
 
 		// Setup the base markup
 		this.$el.html(this.html());
@@ -217,7 +350,7 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 
 		// Output the weekview
 		this.$el.find('.app-week-view__week-view')
-			.html();
+			.html(weekView.render().el);
 
 		return this;
 	}
@@ -265,25 +398,3 @@ PLNR.View.AppView = Backbone.View.extend({
  *
  */
 
-$('.wt-times__select').selectmenu({
-	position: { my : "top+15", at: "center center" }
-});
-
-$('#task-name').selectmenu();
-
-
-$(".datepicker").datepicker({
-  buttonImage: '/img/icon/icon-more-options.svg',
-  buttonImageOnly: true,
-  showOn: 'both',
-  onSelect : function(dateText, inst){
-  		console.log(dateText);
-  		console.log(this);
-  }
-});
-
-$('.wt-dates__link').on('click',function(){
-	$(this).find('.datepicker').datepicker('show');
-})
-
-$('.module-wt__block').draggable({ handle: ".wt-header__module-title" });

@@ -4205,6 +4205,7 @@ fieldset[disabled] a.date-selector__optionbtn {
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1060;
 }
 .module-new-project__header {
   background-color: #4C69A3;
@@ -4336,6 +4337,7 @@ fieldset[disabled] a.mnp-header__closebtn {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   padding: 1em;
+  z-index: 1060 !important;
 }
 .ui-datepicker td span,
 .ui-datepicker td a {
@@ -4399,6 +4401,9 @@ fieldset[disabled] a.mnp-header__closebtn {
 .mnp-times__select {
   display: none !important;
 }
+.ui-selectmenu-menu {
+  z-index: 1060;
+}
 .ui-selectmenu-menu .ui-menu {
   font-family: 'Montserrat', sans-serif;
   background-color: #F0FCE0;
@@ -4422,6 +4427,7 @@ fieldset[disabled] a.mnp-header__closebtn {
 }
 .ui-selectmenu-button span.ui-selectmenu-text {
   padding: 1em;
+  padding-right: 1.5em;
   font-size: 26px;
   display: block;
   text-align: center;
