@@ -18,7 +18,7 @@
 		-> sidebar
 	_Footer
 
-
+TODO: create automatic table of contents script
 */
 /* --------------------------------
 	_Framework_Imports
@@ -4069,6 +4069,7 @@ fieldset[disabled] a.date-selector__optionbtn {
 }
 .app-week-view__week-view {
   height: 95%;
+  position: relative;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -4140,12 +4141,15 @@ fieldset[disabled] a.date-selector__optionbtn {
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  transition: box-shadow 250ms ease;
 }
-.single-day__hour:hover {
-  background-color: #F0FCE0;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-  z-index: 1;
+.single-day__hour:hover .hour {
+  opacity: 1;
+  -webkit-transform: translateY(-15px);
+          transform: translateY(-15px);
+}
+.single-day__hour.__top:hover .hour {
+  -webkit-transform: none;
+          transform: none;
 }
 .single-day__hour:before {
   content: '';
@@ -4166,8 +4170,31 @@ fieldset[disabled] a.date-selector__optionbtn {
 .single-day__hour.__bottom-right {
   border-radius: 0 0 5px 0;
 }
+.single-day__hour.__noon {
+  border-top: 1px solid #F7BB7D;
+}
+.single-day__block.__today .single-day__hour {
+  background-color: #F8FFEE;
+}
+.single-day__hour .hour {
+  text-align: center;
+  position: absolute;
+  left: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: .5em;
+  background-color: #F0FCE0;
+  border-radius: 5px;
+  opacity: 0;
+  color: #F7BB7D;
+  transition: -webkit-transform 250ms ease;
+  transition: transform 250ms ease;
+  transition: transform 250ms ease, -webkit-transform 250ms ease;
+}
 .app-week-view__view-hours {
   position: relative;
+  top: -10px;
   -webkit-flex: 0 0 5em;
       -ms-flex: 0 0 5em;
           flex: 0 0 5em;
@@ -4197,6 +4224,64 @@ fieldset[disabled] a.date-selector__optionbtn {
           flex: 1;
 }
 /* --------------------------------
+   _Week_View_Overlay
+----------------------------------*/
+.week-view-overlay__item {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.overlay-item__block {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 6px;
+  right: 4px;
+  background-color: #4C69A3;
+  border: 1px solid #36528A;
+  border-radius: 5px;
+  padding: .25em;
+  color: white;
+  cursor: pointer;
+  transition: -webkit-transform 250ms ease;
+  transition: transform 250ms ease;
+  transition: transform 250ms ease, -webkit-transform 250ms ease;
+  background-repeat: no-repeat;
+  background-position: 95% 90%;
+  overflow: hidden;
+}
+.overlay-item__block:hover {
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+}
+.overlay-item__block:hover .overlay-item__title {
+  display: none;
+}
+.overlay-item__block:hover .overlay-item__time {
+  display: block;
+}
+.overlay-item__title {
+  text-transform: capitalize;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1;
+  overflow: hidden;
+}
+.overlay-item__id {
+  top: 0;
+  color: #DFE9F8;
+  font-size: .7em;
+  line-height: 1;
+}
+.overlay-item__time {
+  line-height: 1;
+  display: none;
+  margin: 0;
+  color: #F7BB7D;
+}
+/* --------------------------------
    _Module_Work_Time
 ----------------------------------*/
 .module-new-project__block {
@@ -4205,7 +4290,16 @@ fieldset[disabled] a.date-selector__optionbtn {
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1060;
+}
+#PLNR .module-new-project__wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
 }
 .module-new-project__header {
   background-color: #4C69A3;
@@ -4220,6 +4314,10 @@ fieldset[disabled] a.date-selector__optionbtn {
   color: #86CAF4;
   padding: 1em 1.25em;
   cursor: move;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .mnp-header__close {
   -webkit-flex: 0 0 49px;
@@ -4230,6 +4328,10 @@ fieldset[disabled] a.date-selector__optionbtn {
 .mnp-header__heading {
   margin: 0;
   line-height: 1.5;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .mnp-header__closebtn {
   margin-bottom: 0;
@@ -4414,6 +4516,7 @@ fieldset[disabled] a.mnp-header__closebtn {
 .ui-menu .ui-menu-item {
   padding: .5em;
   color: #A3B58C;
+  border-bottom: 1px solid #D5E2C3;
 }
 .ui-menu .ui-menu-item.ui-state-focus {
   background-color: #D6E6C1;

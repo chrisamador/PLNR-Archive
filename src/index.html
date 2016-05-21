@@ -88,6 +88,7 @@
 
 
 	<script type="text/template" id="module-new-project__block--template">
+		<form action="" class="module-new-project__block" id='module-new-project'>
 			<header class="module-new-project__header">
 				<div class="mnp-header__module-title">
 					<h5 class="mnp-header__heading"> <img class="icon" src="/img/icon/icon-add_box.svg" alt=""> New Task</h5>
@@ -101,15 +102,15 @@
 			<main class="module-new-project__body">
 				<div class="mnp-dates__block">
 					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__start-data"> Sun, Feb 2</h6>
+						<h6 class="mnp-dates__start-data"> <%= moment(day,'YYYY-D-M').format('ddd, MMM D') %>  </h6>
 						<div href="#" class="mnp-dates__more">
-							<input type="hidden" class="datepicker" id="start-date" name="start-date" />
+							<input value="<%= moment(day,'YYYY/D/M').format('YYYY-D-M') %>" type="hidden" class="datepicker" id="start-date" name="start-date" />
 						</div>
 					</div>
 					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__end-data">Sun, Feb 2 <%  %></h6>
+						<h6 class="mnp-dates__end-data"><%= moment(day,'YYYY-D-M').format('ddd, MMM D') %></h6>
 						<div class="mnp-dates__more">
-							<input type="hidden" class="datepicker" id="end-date" name="end-date" />
+							<input value="<%= moment(day,'YYYY/D/M').format('YYYY-D-M') %>" type="hidden" class="datepicker" id="end-date" name="end-date" />
 						</div>
 					</div>
 				</div>
@@ -117,32 +118,25 @@
 					<div class="mnp-times__link mnp-times__start">
 						<!-- <h2 class="mnp-time__data">3:00 PM</h2> -->
 						<select class="mnp-times__select" name="start-time" id="start-time">
-							<option value="01">1:00 PM</option>
-							<option value="02">02</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
+						<% var aTimeOptions = Utility.selectTimeOutput(hour); %>
+						<% for(var i = 0; i < aTimeOptions.length; i++){ %>
+							<% var selected = '', autoSelect; %>
+							<% (hour == 0 ? autoSelect = 0 : autoSelect = 4);  %>
+							<% if(i == autoSelect) selected = 'selected'; %>
+							<option value="<%= aTimeOptions[i] %>" <%= selected %>> <%= aTimeOptions[i] %> </option>
+						<% };%>
 						</select>
 						<!-- <label class="mnp-times__label" for="start-time">Start Time</label> -->
 					</div>
 					<div class="mnp-times__link">
 						<!-- <h2 class="mnp-time__data">4:00 PM</h2> -->
 						<select class="mnp-times__select" name="end-time" id="end-time">
-							<option value="01">2:00 PM</option>
-							<option value="02">2:00 PM</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
+						<% var aTimeOptions = Utility.selectTimeOutput(hour + 1); %>
+						<% for(var j = 0; j < aTimeOptions.length; j++){ %>
+							<% var selected = ''; %>
+							<% if(j == 4) selected = 'selected'; %>
+							<option value="<%= aTimeOptions[j] %>" <%= selected %>> <%= aTimeOptions[j] %> </option>
+						<% };%>
 						</select>
 						<!-- <label class="mnp-times__label" for="end-time">End Time</label> -->
 					</div>
@@ -177,7 +171,16 @@
 					<button id="" class="mnp-footer__ctabtn"> Add </button>
 				</div>
 			</footer>
+		</form>
+	</script>
 
+	<script type="text/template" id="week-view-overlay__item--template">
+			<div class="overlay-item__block">
+				<h6 class="overlay-item__title"> <%= title %> </h6>
+				<h6 class="overlay-item__time">2 hours</h6>
+				<small class="overlay-item__id">#<%= id %></small>
+
+			</div>
 	</script>
 
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>

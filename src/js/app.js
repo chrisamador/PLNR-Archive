@@ -22,7 +22,6 @@
 
 var PLNRAPP = function(){
 
-		this.Config = {};
 		this.APP= {
 			baseDate : moment().startOf('day'),
 			startDate: function(){
@@ -47,6 +46,7 @@ var PLNRAPP = function(){
 		this.View = {};
 		this.Model = {};
 		this.Collection = {};
+		this.Data = {};
 }
 
 window.PLNR = new PLNRAPP();
@@ -71,6 +71,45 @@ Utility.amountOfDays = function(start, end){
 	return Math.floor(moment.duration(start - end).asDays() + 1)
 }
 
+Utility.toStdTime = function(h, m){
+
+		var hour,mins = '', suffix;
+		if(h === 0 || h === 12){
+			hour = '12';
+			suffix = (h == 0) ? ' AM' : ' PM'
+		}else if(h > 12){
+			hour = h - 12;
+			suffix = ' PM';
+		}else{
+			hour = h;
+			suffix = ' AM';
+		}
+
+		if(m == true) mins = ':00';
+
+	return hour + mins + ' ' + suffix;
+}
+
+Utility.selectTimeOutput = function(hour){
+	var o = [],
+		 hr = (parseInt(hour) === 0 ? parseInt(hour) : parseInt(hour) - 1), // 0 - 1 == -1
+		 suffix;
+		 min = [':00',':15',':30',':45'];
+
+	for(var i = 0; i < 24; i++){
+		var stdHour = (hr + i > 11 ? hr + i - 12 : hr + i);
+			stdHour = (stdHour == 0 ? 12 : stdHour);
+		suffix = (hr + i > 11 ? ' PM' : ' AM' );
+
+		for(var j = 0; j < min.length; j++){
+			if(stdHour <= 12 && !(stdHour > 11 && suffix == ' PM') ) o.push( stdHour + min[j] + suffix);
+		}
+	}
+
+	return o;
+
+}
+
 Utility.animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
 
 $.fn.extend({
@@ -90,7 +129,9 @@ $.fn.extend({
 PLNR.Model.SingleTask = Backbone.Model.extend({
 	defaults : {
 		name : 'No Name',
-		age : 'No Age'
+		age : 'No Age',
+		startDate: moment(),
+		endDate: moment()
 	}
 });
 
@@ -105,14 +146,48 @@ PLNR.Collection.SingleProjectColl = Backbone.Collection.extend({
 		model : PLNR.Model.SingleTask
 });
 
-var singleProjectCollection = new PLNR.Collection.SingleProjectColl([
+PLNR.Data.singleProjectCollection = new PLNR.Collection.SingleProjectColl([
 	{
-		name : 'chris',
-		email : 'chris@email.com'
+		title : 'chris',
+		email : 'chris@email.com',
+		id: 'one',
+		startDate: moment('2016-16-5','YYYY-D-M')
 	},
 	{
-		name : 'john',
-		email : 'johnwithah@email.com'
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 'two',
+		startDate: moment('2016-21-5','YYYY-D-M')
+	},
+	{
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 're',
+		startDate: moment('2016-20-5','YYYY-D-M')
+	},
+	{
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 'sd',
+		startDate: moment('2016-19-5','YYYY-D-M')
+	},
+	{
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 'hh',
+		startDate: moment('2016-18-5','YYYY-D-M')
+	},
+	{
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 'cc',
+		startDate: moment('2016-17-5','YYYY-D-M')
+	},
+	{
+		title : 'john and the fat boys from new york',
+		email : 'johnwithah@email.com',
+		id: 'za',
+		startDate: moment('2016-15-5','YYYY-D-M')
 	}
 ]);
 
@@ -158,9 +233,8 @@ PLNR.View.DateSelectorHeader = Backbone.View.extend({
 
 PLNR.View.NewProjectForm = Backbone.View.extend({
 	html: Utility.template('module-new-project__block--template'),
-	tagName: 'form',
-	id: 'module-new-project',
-	className: 'module-new-project__block',
+	tagName: 'div',
+	className: 'module-new-project__wrapper',
 	events: {
 		'click .mnp-header__closebtn': 'closebtn'
 	},
@@ -168,23 +242,26 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 		this.config = attr;
 	},
 	render: function(){
+		var module;
 
+		this.$el.html(this.html(this.config));
 
-		this.$el.html(this.html());
-		this.$el.css({
+		module = this.$el.find('#module-new-project');
+
+		module.css({
 			top: '35%',
 			left: '35%',
 			position: 'fixed'
 		});
-		this.$el.animateCss('bounceInDown');
+		module.animateCss('bounceInDown');
 
-		this.$el.find('.mnp-times__select').selectmenu({
+		module.find('.mnp-times__select').selectmenu({
 			position: { my : "top+15", at: "center center" }
 		});
 
-		this.$el.find('#task-name').selectmenu();
+		module.find('#task-name').selectmenu();
 
-		this.$el.find(".datepicker").datepicker({
+		module.find(".datepicker").datepicker({
 		  buttonImage: '/img/icon/icon-more-options.svg',
 		  buttonImageOnly: true,
 		  showOn: 'both',
@@ -194,11 +271,11 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 		  }
 		});
 
-		this.$el.find('.mnp-dates__link').on('click',function(){
+		module.find('.mnp-dates__link').on('click',function(){
 			$(this).find('.datepicker').datepicker('show');
 		})
 
-		this.$el.draggable({ handle: ".mnp-header__module-title" });
+		module.draggable({ handle: ".mnp-header__module-title" });
 
 		return this;
 	},
@@ -207,13 +284,44 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 		this.removeModule();
 	},
 	removeModule: function(){
-		var that = this;
+		var that = this,
+			module = this.$el.find('#module-new-project');
 
-		this.$el.one(Utility.animationEnd, function(){
+		that.$el.one(Utility.animationEnd, function(){
 			that.$el.remove();
 		});
-		this.$el.animateCss('zoomOut');
 
+		that.$el.animateCss('fadeOut');
+	},
+
+})
+
+// Week View Overlay
+PLNR.View.WeekViewOverlay = Backbone.View.extend({
+	className: 'week-view-overlay__block',
+	render: function(){
+		this.collection.each(function(item){
+			var item = new PLNR.View.WeekViewOverlayItem({model: item});
+			this.$el.append(item.render().el);
+		}, this);
+
+		return this;
+	}
+})
+PLNR.View.WeekViewOverlayItem = Backbone.View.extend({
+	html: Utility.template('week-view-overlay__item--template'),
+	className: 'week-view-overlay__item',
+	render: function(){
+		var dayWidth = 100/7,
+			 hourHeight = 100/12;
+
+		this.$el.css({
+			width: dayWidth + '%',
+			height: hourHeight + '%',
+			left: (this.model.get('startDate').format('d') * dayWidth) + '%'
+		})
+		this.$el.html(this.html(this.model.toJSON()))
+		return this;
 	}
 })
 
@@ -236,9 +344,12 @@ PLNR.View.WeekView = Backbone.View.extend({
 		// create days
 		for(var d = 0; d < this.config.amountOfDays; d++){
 			var m = this.config.startDate,
-				dataDay = moment(m).add(d ,'days').format('M-D-YYYY');
+				today = false;
+				dataDay = moment(m).add(d ,'days').format('YYYY-D-M');
 
-			var day = ['<li class="week-view__day"><ul class="single-day__block"  data-day="'+ dataDay +'">'];
+				if(dataDay == moment().format('YYYY-D-M')) today = true;
+
+			var day = ['<li class="week-view__day"><ul class="single-day__block'+ (today?' __today': '') +'"  data-day="'+ dataDay +'">'];
 
 			// create hours
 			for(var h = 0; h < this.config.amountOfHours; h++){
@@ -247,12 +358,14 @@ PLNR.View.WeekView = Backbone.View.extend({
 					hourClasses = '',
 					dataHour = h;
 
+					if(h == 0) hourClasses += '  __top';
 					if(d == 0 && h == 0) hourClasses += '  __top-left';
 					if(d == this.config.amountOfDays - 1 && h == 0) hourClasses += '  __top-right';
 					if(d == 0 && h == this.config.amountOfHours - 1) hourClasses += '  __bottom-left';
 					if(d == this.config.amountOfDays - 1 && h == this.config.amountOfHours - 1) hourClasses += '  __bottom-right';
+					if(h == 12) hourClasses += '  __noon';
 
-				hour = '<li class="single-day__hour'+ hourClasses +'" data-hour="'+ dataHour +'"></li>';
+				hour = '<li class="single-day__hour'+ hourClasses +'" data-hour="'+ dataHour +'"> <small class="hour">'+ Utility.toStdTime(dataHour, true) +'</small class="hour">  </li>';
 
 				day.push(hour);
 
@@ -266,11 +379,16 @@ PLNR.View.WeekView = Backbone.View.extend({
 		return this;
 	},
 	onHourClick : function(e){
-		console.log($(e.target));
-		$('#module-new-project').remove();
-		$('#PLNR').append(new PLNR.View.NewProjectForm().render().el);
-	}
+		var item = $(e.target);
+		if(item.hasClass('hour')) item = item.parent();
+		var data = {
+			hour: parseInt(item.attr('data-hour')),
+			day: item.parent().attr('data-day')
+		}
 
+		$('#module-new-project').remove();
+		$('#PLNR').append(new PLNR.View.NewProjectForm(data).render().el);
+	}
 })
 
 PLNR.View.WeekDayTitles = Backbone.View.extend({
@@ -279,13 +397,12 @@ PLNR.View.WeekDayTitles = Backbone.View.extend({
 	initialize: function(attr){
 		this.config = attr;
 	},
-	// html: _.template('<li class="week-day-titles__day <%= class.join(" ") %> "><h5 class="week-day-titles__heading"><%= title %</h5></li>'),
 	render: function(){
 		var html = [];
 
 		for(var d = 0; d < this.config.amountOfDays; d++){
 			var m = this.config.startDate,
-				title = moment(m).add(d ,'days').format('ddd');
+				title = moment(m).add(d ,'days').format('ddd, DD');
 
 			html.push('<li class="week-day-titles__day"><h5 class="week-day-titles__heading">'+ title +'</h5></li>');
 		}
@@ -329,18 +446,8 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 
 			for(var i = 0; i < hours; i++){
 				html.push(function(i){
-					var time, suffix;
-					if(i === 0 || i === 12){
-						time = '12';
-						suffix = (i == 0) ? ' AM' : ' PM'
-					}else if(i > 12){
-						time = i - 12;
-						suffix = ' PM';
-					}else{
-						time = i;
-						suffix = ' AM';
-					}
-					return '<li class="view-hours__hour">'+ time + suffix +'</li>';
+					var time = Utility.toStdTime(i);
+					return '<li class="view-hours__hour">'+ time +'</li>';
 				}(i));
 			}
 
@@ -352,13 +459,16 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 		this.$el.find('.app-week-view__week-view')
 			.html(weekView.render().el);
 
+		// Output the overlaying componets
+		this.$el.find('.app-week-view__week-view')
+			.append(new PLNR.View.WeekViewOverlay({collection: PLNR.Data.singleProjectCollection}).render().el)
+
 		return this;
 	}
 })
 
 // App Calendar View
 PLNR.View.AppView = Backbone.View.extend({
-	collection: singleProjectCollection,
 	id: 'PLNR',
 	render : function(){
 
