@@ -418,10 +418,10 @@ html{
 
 		transform: translateY(-5px;);
 
-		.overlay-item__title{
+		.overlay-item__title,.overlay-item__id{
 			display: none;
 		}
-		.overlay-item__time{
+		.overlay-item__time,.overlay-item__duration{
 			display: block;
 		}
 
@@ -431,7 +431,8 @@ html{
 
 }
 
-.overlay-item__title{
+.overlay-item__title,
+.overlay-item__time{
 	text-transform: capitalize;
 	margin: 0;
 	white-space: nowrap;
@@ -439,18 +440,24 @@ html{
 	line-height: 1;
 	overflow: hidden;
 }
-.overlay-item__id{
+.overlay-item__id,
+.overlay-item__duration{
 	// position: absolute;
 	top: 0;
 	color: @lavendar;
 	font-size: .7em;
 	line-height: 1;
+	display: block;
+	margin-top: .5em;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
-.overlay-item__time {
-	line-height: 1;
-    display: none;
-    margin: 0;
-    color: @orange;
+
+.overlay-item__time,
+.overlay-item__duration{
+	display:none;
+	color: @orange;
 }
 /* --------------------------------
    _Module_Work_Time

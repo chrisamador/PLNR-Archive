@@ -29,6 +29,7 @@
     "requirejs": "^2.2.0",
     "bootstrap": "^3.3.6",
     "jquery-ui": "jqueryui#^1.11.4",
-    "animate.css": "^3.5.1"
+    "animate.css": "^3.5.1",
+    "backbone.localStorage": "Backbone.localStorage#^1.1.16"
   }
 }

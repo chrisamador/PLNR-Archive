@@ -4255,13 +4255,16 @@ fieldset[disabled] a.date-selector__optionbtn {
   -webkit-transform: translateY(-5px);
           transform: translateY(-5px);
 }
-.overlay-item__block:hover .overlay-item__title {
+.overlay-item__block:hover .overlay-item__title,
+.overlay-item__block:hover .overlay-item__id {
   display: none;
 }
-.overlay-item__block:hover .overlay-item__time {
+.overlay-item__block:hover .overlay-item__time,
+.overlay-item__block:hover .overlay-item__duration {
   display: block;
 }
-.overlay-item__title {
+.overlay-item__title,
+.overlay-item__time {
   text-transform: capitalize;
   margin: 0;
   white-space: nowrap;
@@ -4269,16 +4272,21 @@ fieldset[disabled] a.date-selector__optionbtn {
   line-height: 1;
   overflow: hidden;
 }
-.overlay-item__id {
+.overlay-item__id,
+.overlay-item__duration {
   top: 0;
   color: #DFE9F8;
   font-size: .7em;
   line-height: 1;
+  display: block;
+  margin-top: .5em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-.overlay-item__time {
-  line-height: 1;
+.overlay-item__time,
+.overlay-item__duration {
   display: none;
-  margin: 0;
   color: #F7BB7D;
 }
 /* --------------------------------

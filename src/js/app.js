@@ -46,7 +46,7 @@ var PLNRAPP = function(){
 		this.View = {};
 		this.Model = {};
 		this.Collection = {};
-		this.Data = {};
+		this.Projects = {};
 }
 
 window.PLNR = new PLNRAPP();
@@ -126,12 +126,42 @@ $.fn.extend({
  *
  */
 
-PLNR.Model.SingleTask = Backbone.Model.extend({
+PLNR.Model.SingleProject = Backbone.Model.extend({
+	initialize: function(){
+		// Sets up the collection for the model
+		this.tasks = new PLNR.Collection.SingleProjectColl();
+	},
 	defaults : {
-		name : 'No Name',
-		age : 'No Age',
-		startDate: moment(),
-		endDate: moment()
+		title : 'Required: a string title',
+		durationTotal: 0
+	},
+	validate : function(){
+		console.log('validated');
+	},
+	durationThisWeek : function(){
+			this.tasks.pluck('durationInMins')
+	}
+});
+
+PLNR.Model.SingleTask = Backbone.Model.extend({
+	initialize: function(){
+		this.setDurationInMins();
+	},
+	defaults : {
+		// Required: a moment object
+		startDate: '',
+		// Required: a moment object
+		endDate: '',
+		// Assigned by the setDurationInMins functions
+		durationInMins: 0,
+		// Optional: a string
+		taskNote: ''
+	},
+	setDurationInMins: function(){
+		this.set('durationInMins', 300);
+	},
+	validate: function(){
+		console.log('validate single task')
 	}
 });
 
@@ -141,55 +171,38 @@ PLNR.Model.SingleTask = Backbone.Model.extend({
  *
  */
 
+// The full collection holder
+PLNR.Collection.Projects = Backbone.Collection.extend({
+		model : PLNR.Model.SingleProject,
+		localStorage: new Backbone.LocalStorage("PLNRCOL"),
+})
+
 // Collection that will become a Project
 PLNR.Collection.SingleProjectColl = Backbone.Collection.extend({
 		model : PLNR.Model.SingleTask
 });
 
-PLNR.Data.singleProjectCollection = new PLNR.Collection.SingleProjectColl([
+/**
+ *
+ * PLNR Projects
+ *
+ */
+
+
+PLNR.Projects = new PLNR.Collection.Projects([
 	{
-		title : 'chris',
-		email : 'chris@email.com',
-		id: 'one',
-		startDate: moment('2016-16-5','YYYY-D-M')
+		title : 'Gene Website',
 	},
 	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 'two',
-		startDate: moment('2016-21-5','YYYY-D-M')
+		title : 'Workout',
 	},
 	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 're',
-		startDate: moment('2016-20-5','YYYY-D-M')
-	},
-	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 'sd',
-		startDate: moment('2016-19-5','YYYY-D-M')
-	},
-	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 'hh',
-		startDate: moment('2016-18-5','YYYY-D-M')
-	},
-	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 'cc',
-		startDate: moment('2016-17-5','YYYY-D-M')
-	},
-	{
-		title : 'john and the fat boys from new york',
-		email : 'johnwithah@email.com',
-		id: 'za',
-		startDate: moment('2016-15-5','YYYY-D-M')
+		title : 'Family Stuff',
 	}
 ]);
+
+
+
 
 /**
  *
@@ -248,12 +261,7 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 
 		module = this.$el.find('#module-new-project');
 
-		module.css({
-			top: '35%',
-			left: '35%',
-			position: 'fixed'
-		});
-		module.animateCss('bounceInDown');
+
 
 		module.find('.mnp-times__select').selectmenu({
 			position: { my : "top+15", at: "center center" }
@@ -276,6 +284,17 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 		})
 
 		module.draggable({ handle: ".mnp-header__module-title" });
+
+		console.log(module.outerHeight() + 'thanks')
+
+		module.css({
+			top: '35%',
+			left: '35%',
+			position: 'fixed'
+		});
+
+
+		module.animateCss('bounceIn');
 
 		return this;
 	},
@@ -300,10 +319,10 @@ PLNR.View.NewProjectForm = Backbone.View.extend({
 PLNR.View.WeekViewOverlay = Backbone.View.extend({
 	className: 'week-view-overlay__block',
 	render: function(){
-		this.collection.each(function(item){
-			var item = new PLNR.View.WeekViewOverlayItem({model: item});
-			this.$el.append(item.render().el);
-		}, this);
+		// this.collection.each(function(item){
+		// 	var item = new PLNR.View.WeekViewOverlayItem({model: item});
+		// 	this.$el.append(item.render().el);
+		// }, this);
 
 		return this;
 	}
@@ -461,7 +480,7 @@ PLNR.View.AppCalWeekView = Backbone.View.extend({
 
 		// Output the overlaying componets
 		this.$el.find('.app-week-view__week-view')
-			.append(new PLNR.View.WeekViewOverlay({collection: PLNR.Data.singleProjectCollection}).render().el)
+			.append(new PLNR.View.WeekViewOverlay({collection: PLNR.Projects}).render().el)
 
 		return this;
 	}
