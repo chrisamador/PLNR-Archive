@@ -18,13 +18,13 @@ gulp.task('server',function(){
 gulp.task('watch', function(){
 	livereload.listen();
 
-	gulp.watch('src/js/app.js',['js']);
+	gulp.watch('src/js/*.js',['js']);
 	gulp.watch('src/*.html',['html']);
 	gulp.watch('src/less/*.less',['styles']);
 })
 
 gulp.task('js', function(){
-	return gulp.src('src/js/app.js')
+	return gulp.src('src/js/*.js')
 	.pipe(livereload());
 });
 

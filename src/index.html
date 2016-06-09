@@ -36,6 +36,23 @@
 			<a href = "http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 	<div id="loading" class="loading"></div>
+	<div id="PLNRAPP">
+	<header id="app-header" class="header__block">
+		<div class="app-header__block">
+			<h1 style="display:inline-block;margin: 0;margin-right: 14px;">PLNR</h1>
+			<p style="display:inline-block;margin:0;">Plan your week, track your time.</p>
+		</div>
+	</header>
+	<main class="app-cal-view__block">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12" id="app-cal-view">
+
+				</div>
+			</div>
+		</div>
+	</main>
+	</div><!-- #PLNRAPP -->
 
 	<script type="text/template" id="header__block--template">
 			<div class="app-header__block">
@@ -45,6 +62,11 @@
 	</script>
 	<script type="text/template" id="date-selector__block--template">
 			<div class="container">
+			<div class="row">
+			<div class="col-xs-3">
+				<button>Hello</button>
+			</div>
+			<div class="col-xs-6">
 				<h5 class="date-selector__today">
 					<a href="#" class="date-selector__todaybtn">Today</a>
 				</h5>
@@ -59,129 +81,247 @@
 						</a>
 					</div>
 				</div>
-				<div class="date-selector__options">
-					<a href="#" class="date-selector__optionbtn">
-						<img src="/img/icon/icon-more-options.svg" alt="">
-					</a>
-				</div>
+
+			</div>
+			<div class="col-xs-3">
+				<button class="btn btn-primary" id="sidebar-task">Task Details</button>
+			</div>
+			</div>
 			</div>
 	</script>
 
 
+<!--
 
-	<script type="text/template" id="app-cal-view__block--template">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="app-week-view__block">
-							<div class="app-week-view__day-titles">
-							</div>
-							<div class="app-week-view__view-hours">
-							</div>
-							<div class="app-week-view__week-view">
-							</div>
-						</div>
-					</div>
+ two ways to bring up this module
+ 	- a new task
+ 	- a edit task
+
+ 	base data
+ 		- module title : string
+ 		- module type : string
+
+ 	a new task comes with the following
+ 		- hour : 0 - 24
+ 		- day : format (YYYY-D-M)
+
+ 	a edit task comes with the following
+ 		- day : format (YYYY-D-M)
+ 		- startingHour : 0 - 24
+ 		- endingHour : 0 - 24
+ 		- projectTitle : string
+
+ -->
+	<script type="text/template" id="task-module__block--template">
+		<form action="" class="task-module__block" id='task-module'>
+			<header class="task-module__header">
+				<div class="tm-header__module-title">
+
+					<h5 class="tm-header__heading">
+						<img class="icon" src="/img/icon/icon-add_box.svg" alt=""> <%= moduleTitle %>
+					</h5>
+
 				</div>
-			</div>
-	</script>
-
-
-	<script type="text/template" id="module-new-project__block--template">
-		<form action="" class="module-new-project__block" id='module-new-project'>
-			<header class="module-new-project__header">
-				<div class="mnp-header__module-title">
-					<h5 class="mnp-header__heading"> <img class="icon" src="/img/icon/icon-add_box.svg" alt=""> New Task</h5>
-				</div>
-				<div class="mnp-header__close">
-					<button class="mnp-header__closebtn">
+				<div class="tm-header__close">
+					<button class="tm-header__closebtn">
 						<img src="/img/icon/icon-cross.svg" alt="close">
 					</button>
 				</div>
 			</header>
-			<main class="module-new-project__body">
-				<div class="mnp-dates__block">
-					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__start-data"> <%= moment(day,'YYYY-D-M').format('ddd, MMM D') %>  </h6>
-						<div href="#" class="mnp-dates__more">
-							<input value="<%= moment(day,'YYYY/D/M').format('YYYY-D-M') %>" type="hidden" class="datepicker" id="start-date" name="start-date" />
+
+			<main class="task-module__body">
+
+				<div class="tm-dates__block">
+					<div class="tm-dates__link">
+						<h6 class="tm-dates__start-data"> <%= moment(day,'YYYY-D-M').format('ddd, MMM D') %>  </h6>
+						<div href="#" class="tm-dates__more">
+							<input value="<%= moment(day, 'YYYY/D/M').format('YYYY-M-D') %>" type="hidden" class="datepicker" id="start-date" name="start-date" />
 						</div>
 					</div>
-					<div class="mnp-dates__link">
-						<h6 class="mnp-dates__end-data"><%= moment(day,'YYYY-D-M').format('ddd, MMM D') %></h6>
-						<div class="mnp-dates__more">
-							<input value="<%= moment(day,'YYYY/D/M').format('YYYY-D-M') %>" type="hidden" class="datepicker" id="end-date" name="end-date" />
+
+					<div class="tm-dates__link">
+						<h6 class="tm-dates__end-data"><%= moment(day,'YYYY-D-M').format('ddd, MMM D') %></h6>
+						<div class="tm-dates__more">
+							<input value="<%= moment(day,'YYYY/D/M').format('YYYY-M-D') %>" type="hidden" class="datepicker" id="end-date" name="end-date" />
 						</div>
 					</div>
 				</div>
-				<div class="mnp-times__block">
-					<div class="mnp-times__link mnp-times__start">
-						<!-- <h2 class="mnp-time__data">3:00 PM</h2> -->
-						<select class="mnp-times__select" name="start-time" id="start-time">
-						<% var aTimeOptions = Utility.selectTimeOutput(hour); %>
-						<% for(var i = 0; i < aTimeOptions.length; i++){ %>
-							<% var selected = '', autoSelect; %>
-							<% (hour == 0 ? autoSelect = 0 : autoSelect = 4);  %>
-							<% if(i == autoSelect) selected = 'selected'; %>
-							<option value="<%= aTimeOptions[i] %>" <%= selected %>> <%= aTimeOptions[i] %> </option>
-						<% };%>
-						</select>
-						<!-- <label class="mnp-times__label" for="start-time">Start Time</label> -->
+
+				<div class="tm-times__block">
+					<div class="tm-times__link tm-times__start">
+						<label class="tm-times__label" for="start-time">Start Time</label>
+
+
+						<div class="plnr-select__block">
+							<%
+
+								var startHour,
+									startTimeOptions;
+
+								if(moduleType == 'new'){
+									var parseHour = parseInt(hour, 10);
+									startHour =  Utility.toStdTime(parseHour, true);
+									startTimeOptions = Utility.selectTimeOptions(parseHour);
+								}else if(moduleType == 'edit'){
+									startHour =  startingHour
+									startTimeOptions = Utility.selectTimeOptions(0);
+								}
+
+							%>
+							<a href="#" class="plnr-select__selected" data-value="<%= startHour %>">
+								<span class="plnr-select__selected-text"> <%= startHour %> </span>
+							</a>
+							<div class="plnr-select-options__block">
+								<ul class="plnr-select-options__wrapper">
+									<%  _.each(startTimeOptions, function(option){  %>
+
+										 	<li><a href="#" data-value="<%= option %>" class="plnr-select-options__option"> <%= option %> </a></li>
+
+									<% }); %>
+								</ul>
+							</div>
+						</div>
+
+
 					</div>
-					<div class="mnp-times__link">
-						<!-- <h2 class="mnp-time__data">4:00 PM</h2> -->
-						<select class="mnp-times__select" name="end-time" id="end-time">
-						<% var aTimeOptions = Utility.selectTimeOutput(hour + 1); %>
-						<% for(var j = 0; j < aTimeOptions.length; j++){ %>
-							<% var selected = ''; %>
-							<% if(j == 4) selected = 'selected'; %>
-							<option value="<%= aTimeOptions[j] %>" <%= selected %>> <%= aTimeOptions[j] %> </option>
-						<% };%>
-						</select>
-						<!-- <label class="mnp-times__label" for="end-time">End Time</label> -->
+					<div class="tm-times__link tm-times__end">
+						<label class="tm-times__label" for="end-time">End Time</label>
+
+
+						<div class="plnr-select__block">
+							<%
+
+								var endHour,
+									endTimeOptions;
+
+								if(moduleType == 'new'){
+									var parseHour = parseInt(hour, 10) + 1;
+									endHour =  Utility.toStdTime(parseHour, true);
+									endTimeOptions = Utility.selectTimeOptions(parseHour);
+								}else if(moduleType == 'edit'){
+									endHour =  endingHour;
+									endTimeOptions = Utility.selectTimeOptions(0);
+								}
+
+							%>
+							<a href="#" class="plnr-select__selected" data-value="<%= endHour %>" >
+								<span class="plnr-select__selected-text"><%= endHour %></span>
+							</a>
+							<div class="plnr-select-options__block">
+								<ul class="plnr-select-options__wrapper">
+									<%  _.each(endTimeOptions, function(option){  %>
+
+										 	<li><a href="#" data-value="<%= option %>" class="plnr-select-options__option"> <%= option %> </a></li>
+
+									<% }); %>
+								</ul>
+							</div>
+						</div>
+
+
 					</div>
 				</div>
-				<div class="mnp-task__block">
-					<select name="task-name" id="task-name">
-						<option value="">Select a Project</option>
-						<option value="1">Task 1</option>
-						<option value="2">Task 2</option>
-						<option value="3">Task 3</option>
-						<option value="4">Task 4</option>
-						<option value="5">Task 5</option>
-					</select>
+				<div class="tm-task__block">
+
+
+					<div class="plnr-select__block">
+
+							<%
+
+								var startingTitle,
+									extraClass = '';
+
+								if(moduleType == 'new'){
+									startingTitle = 'Select a Project';
+								}else if(moduleType == 'edit'){
+									startingTitle = projectTitle;
+									extraClass = 'ignore-hover'
+								}
+
+							%>
+
+						<a href="#" class="plnr-select__selected <%= extraClass %>" data-value="">
+						<span class="plnr-select__selected-text"> <%= startingTitle %> </span> <span class="arrow">  </span>
+						</a>
+
+						<div class="tm-task-input__block">
+							<input data-value="no-new-project" placeholder="Name of New Project" type="text" class="tm-task-input__input">
+							<button class="tm-task-input__closebtn">
+								<img src="/img/icon/icon-cross.svg" alt="close">
+							</button>
+						</div>
+
+						<% if(moduleType == 'new'){ %>
+						<div class="plnr-select-options__block">
+							<ul class="plnr-select-options__wrapper">
+							<li><a href="#" data-value="new-task" class="plnr-select-options__option"> Or Create New Task + </a></li>
+							<% PLNR.Projects.forEach(function(project){ %>
+								<li><a href="#" data-value="<%= project.get('id') %>" class="plnr-select-options__option"> <%= project.get('title') %> </a></li>
+							<% }) %>
+							</ul>
+						</div>
+						<%}%>
+
+
+					</div>
+
 				</div>
-				<ul class="mnp-task-details__block">
-					<li class="mnp-task-details__years">
-						<h5 class="mnp-task-detail__data">200 Hrs</h5>
-						<span class="mnp-task-details__label">Year</span>
-					</li>
-					<li class="mnp-task-details__month">
-						<h5 class="mnp-task-detail__data">22 Hrs</h5>
-						<span class="mnp-task-details__label">Month</span>
-					</li>
-					<li class="mnp-task-details__week">
-						<h5 class="mnp-task-detail__data">5 Hrs</h5>
-						<span class="mnp-task-details__label">Week</span>
-					</li>
-				</ul>
+				<div class="tm-task-details__block">
+					<ul class="tm-task-details__wrapper">
+						<li class="tm-task-details__years">
+							<h5 class="tm-task-detail__data">200 Hrs</h5>
+							<span class="tm-task-details__label">Year</span>
+						</li>
+						<li class="tm-task-details__month">
+							<h5 class="tm-task-detail__data">22 Hrs</h5>
+							<span class="tm-task-details__label">Month</span>
+						</li>
+						<li class="tm-task-details__week">
+							<h5 class="tm-task-detail__data">5 Hrs</h5>
+							<span class="tm-task-details__label">Week</span>
+						</li>
+					</ul>
+				</div>
 			</main>
-			<footer class="module-new-project__footer">
-				<div class="mnp-footer__cta">
-					<button id="" class="mnp-footer__ctabtn"> Add </button>
+			<footer class="task-module__footer">
+				<div class="tm-footer__error is-hidden">
+					<div class="tm-footer__error-text animated shake">Error!</div>
+				</div>
+				<div class="tm-footer__cta">
+					<% if(moduleType == 'new'){%>
+					<button class="tm-footer__ctabtn"> Add 1 Hour</button>
+					<%} else if(moduleType == 'edit') {%>
+					<button class="tm-footer__savebtn"> Save </button>
+					<button class="tm-footer__removebtn"> Remove </button>
+					<%}%>
 				</div>
 			</footer>
 		</form>
 	</script>
 
 	<script type="text/template" id="week-view-overlay__item--template">
-			<div class="overlay-item__block">
+			<div class="overlay-item__block" data-task-id="<%= id %>">
 				<h6 class="overlay-item__title"> <%= title %> </h6>
-				<h6 class="overlay-item__time">2 hours</h6>
-				<small class="overlay-item__id">#<%= id %></small>
-				<small class="overlay-item__duration">12:00am - 2:00am</small>
+				<h6 class="overlay-item__time"><%= amountOfTime %></h6>
+				<small class="overlay-item__duration"><%= duration %></small>
 			</div>
 	</script>
+
+	<script id="sidebar-tasks__block--template" type="text/template">
+		<div class="sidebar-tasks__inner">
+			<button id="close-btn" class="btn btn-primary">Close</button>
+			<h1>Tasks this week</h1>
+			<div class="sidebar-task__details">
+
+			</div>
+			<h1>Graph</h1>
+			<div class="sidebar-task__graph">
+
+			</div>
+		</div>
+	</script>
+
+
 
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
