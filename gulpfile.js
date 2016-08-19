@@ -7,11 +7,11 @@ var gulp = require('gulp'),
    rename = require('gulp-rename'),
    minifycss = require('gulp-minify-css');
 
-gulp.task('default', ['styles','server','watch']);
+gulp.task('default', ['html','styles','js','server','img','watch']);
 
 gulp.task('server',function(){
 	var app = express();
-	app.use(express.static('./src'));
+	app.use(express.static('./public'));
 	app.listen(4000);
 });
 
@@ -25,16 +25,25 @@ gulp.task('watch', function(){
 
 gulp.task('js', function(){
 	return gulp.src('src/js/*.js')
+	.pipe(gulp.dest('public/js'))
 	.pipe(livereload());
 });
 
 gulp.task('html', function(){
 	return gulp.src('src/*.html')
+	.pipe(gulp.dest('public/'))
+	.pipe(livereload());
+});
+
+gulp.task('img', function(){
+	return gulp.src('src/img/*/*.*')
+	.pipe(gulp.dest('public/img'))
 	.pipe(livereload());
 });
 
 gulp.task('css', function(){
 	return gulp.src('src/css/*.css')
+	.pipe(gulp.dest('public/css'))
 	.pipe(livereload());
 });
 
@@ -42,9 +51,9 @@ gulp.task('styles', function() {
   return gulp.src('src/less/main.less')
     .pipe(less())
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-    .pipe(gulp.dest('src/css'))
+    .pipe(gulp.dest('public/css'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
-    .pipe(gulp.dest('src/css'))
+    .pipe(gulp.dest('public/css'))
     .pipe(livereload());
 });

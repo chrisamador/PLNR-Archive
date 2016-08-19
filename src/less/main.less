@@ -146,11 +146,11 @@ body.module-inview{
 		background-color: @lavendar-light;
 	}
 }
-.header__block{
+.header{
 
 }
 
-.app-header__block{
+.app-header{
 	background-color: #444444;
 	padding: 1em;
 
@@ -159,7 +159,7 @@ body.module-inview{
 	}
 }
 
-.date-selector__block{
+.date-selector{
 	text-align: center;
 	background-color: @green-light;
 	color: @green-dark;
@@ -175,7 +175,7 @@ body.module-inview{
 .date-selector__timeline{
 	margin-bottom: 1em;
 }
-.week-selector-timeline__block{
+.week-selector-timeline{
 
 }
 .week-selector-timeline--lastbtn,
@@ -209,6 +209,9 @@ body.module-inview{
 	.btn();
 	.mx-headerbtn();
 }
+.sidebar-task-btn{
+	margin-top: 1.5em;
+}
 
 /* --------------------------------
    _Main
@@ -218,11 +221,11 @@ body.module-inview{
 	padding:0;
 	list-style: none;
 }
-.app-week-view__block{
+.app-week-view{
 	font-family: @headings-font-family;
 
 }
-.app-week-view__block{
+.app-week-view{
 	color: @green-dark;
 	position: relative;
 	padding-bottom: 1em;
@@ -242,7 +245,7 @@ body.module-inview{
 	flex: 100%;
 	height: 5%
 }
-.week-day-titles__block{
+.week-day-titles{
 	.mx-ulrest();
 	.clearfix();
 }
@@ -262,7 +265,7 @@ body.module-inview{
 	flex: 1;
 }
 
-.week-view__block{
+.week-view{
 	.mx-ulrest();
 	.clearfix();
 	border: 1px solid #E2F2CE;
@@ -281,7 +284,7 @@ body.module-inview{
 	flex: 1;
    display: flex;
 }
-.single-day__block{
+.single-day{
 	.mx-ulrest();
 
 	// flex box
@@ -339,7 +342,7 @@ body.module-inview{
 		border-top: 2px solid;
 	}
 
-	.single-day__block.__today &{
+	.single-day.__today &{
 		background-color: @orange-light;
 	}
 
@@ -369,7 +372,7 @@ body.module-inview{
 	display: flex;
 	padding-right: .75em;
 }
-.view-hours__block{
+.view-hours{
 	.mx-ulrest();
 	text-align: right;
 
@@ -388,7 +391,7 @@ body.module-inview{
 /* --------------------------------
    _Week_View_Overlay
 ----------------------------------*/
-.week-view-overlay__block{
+.week-view-overlay{
 
 }
 .week-view-overlay__item{
@@ -404,7 +407,7 @@ body.module-inview{
 		z-index: 1;
 	}
 }
-.overlay-item__block{
+.overlay-item{
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -467,7 +470,7 @@ body.module-inview{
 	color: @orange;
 }
 
-.time-bar__block{
+.time-bar{
 	position: absolute;
 	left: 0;
 	width: 100%;
@@ -491,9 +494,9 @@ body.module-inview{
 
 
 
-// plnr-select__block
+// plnr-select
 
-.plnr-select__block{
+.plnr-select{
 	position: relative;
 	text-align: center;
 }
@@ -515,7 +518,7 @@ body.module-inview{
 		color: @blue;
 	}
 }
-.plnr-select-options__block{
+.plnr-select-options{
 	display: none; // display with js
 
 	text-align: center;
@@ -557,7 +560,7 @@ body.module-inview{
 	}
 }
 
-.task-module__block{
+.task-module{
 	max-width: 400px;
 	border-radius: @border-radius-base;
 	//overflow: hidden;
@@ -603,6 +606,10 @@ body.module-inview{
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+
+	img{
+		margin-right: 1em;
+	}
 }
 .tm-header__closebtn{
 	.btn();
@@ -621,7 +628,7 @@ body.module-inview{
 
 }
 // Dates
-.tm-dates__block{
+.tm-dates{
 	background-color: @green;
 
 	display: flex;
@@ -713,12 +720,12 @@ body.module-inview{
 }
 
 // Times
-.tm-times__block{
+.tm-times{
 	display: flex;
 	text-align: center;
 
 	a:hover, a:focus{
-		color: @green-dark;
+		color: @orange;
 	}
 
 }
@@ -806,7 +813,7 @@ body.module-inview{
 }
 
 // Task
-.tm-task__block{
+.tm-task{
 	border-top: 1px solid @iron-light;
 	color: @blue;
 	// background-color: @lavendar;
@@ -816,12 +823,12 @@ body.module-inview{
 	}
 
 	a:hover, a:focus{
-		color: @green-dark;
+		color: @orange;
 	}
 
 }
 
-// .tm-task__block
+// .tm-task
 // .plnr-select-options__option{
 // 	padding: .5em 1em;
 // 	display: block;
@@ -836,19 +843,19 @@ body.module-inview{
 // 	}
 // }
 
-.tm-task__block
-.plnr-select-options__block{
+.tm-task
+.plnr-select-options{
 	position: relative;
 	left: auto;
 	right: auto;
 }
-.tm-task__block .plnr-select__block{
+.tm-task .plnr-select{
 	overflow: hidden;
 }
 
 
 // Task Details
-.tm-task-details__block{
+.tm-task-details{
 	display: none;
 }
 .tm-task-details__wrapper{
@@ -880,7 +887,7 @@ body.module-inview{
 
 // New Task
 
-.tm-task-input__block{
+.tm-task-input{
 	display: flex;
 	position: absolute;
 	top: 0;
@@ -976,13 +983,13 @@ body.module-inview{
 }
 
 /*============================================
-=            _sidebar-tasks__block            =
+=            _sidebar-tasks            =
 ============================================*/
 #PLNRAPP{
 	position: relative;
 	overflow: hidden;
 }
-.sidebar-tasks__block{
+.sidebar-tasks{
 	position: absolute;
 	z-index: 99;
 	top: 0;
@@ -1003,7 +1010,7 @@ body.module-inview{
 	.mx-ulrest();
 }
 
-.graph-listing__block{
+.graph-listing{
 	.mx-ulrest();
 	.clearfix();
 	background-color: @green;
@@ -1021,5 +1028,5 @@ body.module-inview{
 	opacity: 0;
 
 }
-/*=====  End of sidebar-tasks__block  ======*/
+/*=====  End of sidebar-tasks  ======*/
 

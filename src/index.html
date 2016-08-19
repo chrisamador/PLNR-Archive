@@ -37,13 +37,15 @@
 		<![endif]-->
 	<div id="loading" class="loading"></div>
 	<div id="PLNRAPP">
-	<header id="app-header" class="header__block">
-		<div class="app-header__block">
+	<header id="app-header" class="header">
+		<div class="app-header">
+			<div class="container">
 			<h1 style="display:inline-block;margin: 0;margin-right: 14px;">PLNR</h1>
 			<p style="display:inline-block;margin:0;">Plan your week, track your time.</p>
+			</div>
 		</div>
 	</header>
-	<main class="app-cal-view__block">
+	<main class="app-cal-view">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12" id="app-cal-view">
@@ -54,25 +56,24 @@
 	</main>
 	</div><!-- #PLNRAPP -->
 
-	<script type="text/template" id="header__block--template">
-			<div class="app-header__block">
+	<script type="text/template" id="header--template">
+			<div class="app-header">
 				<h1 style="display:inline-block;margin: 0;margin-right: 14px;">PLNR</h1>
 				<p style="display:inline-block;margin:0;">Plan your week, track your time.</p>
 			</div>
 	</script>
-	<script type="text/template" id="date-selector__block--template">
+	<script type="text/template" id="date-selector--template">
 			<div class="container">
 			<div class="row">
 			<div class="col-xs-3">
-				<button>Hello</button>
 			</div>
 			<div class="col-xs-6">
 				<h5 class="date-selector__today">
 					<a href="#" class="date-selector__todaybtn">Today</a>
 				</h5>
 				<div class="date-selector__timeline">
-					<div class="week-selector-timeline__block">
-						<a href="#" class="btn week-selector-timeline--lastbtn">
+					<div class="week-selector-timeline">
+						<a href="#" class="week-selector-timeline--lastbtn">
 							<img src="img/icon/icon-arrow_left.svg" alt="">
 						</a>
 						<h2 class="week-selector-timeline--heading"><%= startDate %> - <%= endDate %></h2>
@@ -84,7 +85,7 @@
 
 			</div>
 			<div class="col-xs-3">
-				<button class="btn btn-primary" id="sidebar-task">Task Details</button>
+				<button class="btn btn-primary sidebar-task-btn" id="sidebar-task">Task statistics</button>
 			</div>
 			</div>
 			</div>
@@ -112,8 +113,8 @@
  		- projectTitle : string
 
  -->
-	<script type="text/template" id="task-module__block--template">
-		<form action="" class="task-module__block" id='task-module'>
+	<script type="text/template" id="task-module--template">
+		<form action="" class="task-module" id='task-module'>
 			<header class="task-module__header">
 				<div class="tm-header__module-title">
 
@@ -131,7 +132,7 @@
 
 			<main class="task-module__body">
 
-				<div class="tm-dates__block">
+				<div class="tm-dates">
 					<div class="tm-dates__link">
 						<h6 class="tm-dates__start-data"> <%= moment(day,'YYYY-D-M').format('ddd, MMM D') %>  </h6>
 						<div href="#" class="tm-dates__more">
@@ -147,12 +148,12 @@
 					</div>
 				</div>
 
-				<div class="tm-times__block">
+				<div class="tm-times">
 					<div class="tm-times__link tm-times__start">
 						<label class="tm-times__label" for="start-time">Start Time</label>
 
 
-						<div class="plnr-select__block">
+						<div class="plnr-select">
 							<%
 
 								var startHour,
@@ -171,7 +172,7 @@
 							<a href="#" class="plnr-select__selected" data-value="<%= startHour %>">
 								<span class="plnr-select__selected-text"> <%= startHour %> </span>
 							</a>
-							<div class="plnr-select-options__block">
+							<div class="plnr-select-options">
 								<ul class="plnr-select-options__wrapper">
 									<%  _.each(startTimeOptions, function(option){  %>
 
@@ -188,7 +189,7 @@
 						<label class="tm-times__label" for="end-time">End Time</label>
 
 
-						<div class="plnr-select__block">
+						<div class="plnr-select">
 							<%
 
 								var endHour,
@@ -207,7 +208,7 @@
 							<a href="#" class="plnr-select__selected" data-value="<%= endHour %>" >
 								<span class="plnr-select__selected-text"><%= endHour %></span>
 							</a>
-							<div class="plnr-select-options__block">
+							<div class="plnr-select-options">
 								<ul class="plnr-select-options__wrapper">
 									<%  _.each(endTimeOptions, function(option){  %>
 
@@ -221,10 +222,10 @@
 
 					</div>
 				</div>
-				<div class="tm-task__block">
+				<div class="tm-task">
 
 
-					<div class="plnr-select__block">
+					<div class="plnr-select">
 
 							<%
 
@@ -244,7 +245,7 @@
 						<span class="plnr-select__selected-text"> <%= startingTitle %> </span> <span class="arrow">  </span>
 						</a>
 
-						<div class="tm-task-input__block">
+						<div class="tm-task-input">
 							<input data-value="no-new-project" placeholder="Name of New Project" type="text" class="tm-task-input__input">
 							<button class="tm-task-input__closebtn">
 								<img src="/img/icon/icon-cross.svg" alt="close">
@@ -252,7 +253,7 @@
 						</div>
 
 						<% if(moduleType == 'new'){ %>
-						<div class="plnr-select-options__block">
+						<div class="plnr-select-options">
 							<ul class="plnr-select-options__wrapper">
 							<li><a href="#" data-value="new-task" class="plnr-select-options__option"> Or Create New Task + </a></li>
 							<% PLNR.Projects.forEach(function(project){ %>
@@ -266,7 +267,7 @@
 					</div>
 
 				</div>
-				<div class="tm-task-details__block">
+				<div class="tm-task-details">
 					<ul class="tm-task-details__wrapper">
 						<li class="tm-task-details__years">
 							<h5 class="tm-task-detail__data">200 Hrs</h5>
@@ -300,14 +301,14 @@
 	</script>
 
 	<script type="text/template" id="week-view-overlay__item--template">
-			<div class="overlay-item__block" data-task-id="<%= id %>">
+			<div class="overlay-item" data-task-id="<%= id %>">
 				<h6 class="overlay-item__title"> <%= title %> </h6>
 				<h6 class="overlay-item__time"><%= amountOfTime %></h6>
 				<small class="overlay-item__duration"><%= duration %></small>
 			</div>
 	</script>
 
-	<script id="sidebar-tasks__block--template" type="text/template">
+	<script id="sidebar-tasks--template" type="text/template">
 		<div class="sidebar-tasks__inner">
 			<button id="close-btn" class="btn btn-primary">Close</button>
 			<h1>Tasks this week</h1>

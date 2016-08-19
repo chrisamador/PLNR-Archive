@@ -13,7 +13,7 @@
 
 /*
 
-
+- Notes for the task, so sub task can be explained
  - on hover the other projects besides that project being hover on, on the screen dim down
  - Tool bar on the left side, photoshopish
  - Right top put for the task drawer
@@ -23,6 +23,8 @@
  - Can start the days on any hour of the day, eg: 7 am instead of 12 am
  - Add colors to the projects
  - On click of task edit
+ - Check list for the task
+ - Pre amount of hours for regular events
 */
 
 
@@ -79,7 +81,6 @@ var PLNRAPP = function(){
 }
 
 window.PLNR = new PLNRAPP();
-
 
 
 }())
@@ -217,7 +218,6 @@ PLNR.Model.SingleProject = Backbone.Model.extend({
 	initialize: function(options){
 
 		// Sets up the collection for the model
-
 		var config = {
 			title: options.title,
 		}
@@ -246,7 +246,6 @@ PLNR.Model.SingleProject = Backbone.Model.extend({
 		});
 
 		return minThisYear;
-
 	},
 	hoursThisWeek: function(){
 		var week = moment().week(),
@@ -348,9 +347,9 @@ PLNR.Projects = new PLNR.Collection.Projects();
 
 // Date Selector
 PLNR.View.DateSelector = Backbone.View.extend({
-	className: 'date-selector__block',
+	className: 'date-selector',
 	id: 'date-selector',
-	html: Utility.template('date-selector__block--template'),
+	html: Utility.template('date-selector--template'),
 	initialize: function(){
 		// this.listenTo(this.model, 'change', this.render);
 		PLNR.APP.on('weekChange', this.render, this);
@@ -383,14 +382,14 @@ PLNR.View.DateSelector = Backbone.View.extend({
 	},
 	sidebarTasks: function(e){
 		e.preventDefault();
-		$('.sidebar-tasks__block').toggleClass('in-view');
+		$('.sidebar-tasks').toggleClass('in-view');
 
 	}
 });
 
 // Form
 PLNR.View.TaskModule = Backbone.View.extend({
-	html: Utility.template('task-module__block--template'),
+	html: Utility.template('task-module--template'),
 	className: 'task-module__wrapper',
 	events: {
 		'click .tm-header__closebtn': 'closebtn',
@@ -422,7 +421,7 @@ PLNR.View.TaskModule = Backbone.View.extend({
 
 		module.animateCss('bounceIn');
 
-		this.$el.find('.tm-times__link .plnr-select__block').addClass('loaded');
+		this.$el.find('.tm-times__link .plnr-select').addClass('loaded');
 
 		// $('body').addClass('module-inview');
 
@@ -456,7 +455,7 @@ PLNR.View.TaskModule = Backbone.View.extend({
 		plnrSelect.toggleClass('plnr-select-options--show');
 
 		if(plnrSelect.parent().hasClass('tm-times__link') && plnrSelect.hasClass('loaded')){
-			plnrSelect.find('.plnr-select-options__block').scrollTop(196);
+			plnrSelect.find('.plnr-select-options').scrollTop(196);
 			plnrSelect.removeClass('loaded');
 		}
 	},
@@ -464,7 +463,7 @@ PLNR.View.TaskModule = Backbone.View.extend({
 		e.preventDefault();
 		var el = $(e.currentTarget);
 
-		var plnrSelect = el.closest('.plnr-select__block'),
+		var plnrSelect = el.closest('.plnr-select'),
 			selectedValue = el.attr('data-value'),
 			selectText = el.text();
 
@@ -485,7 +484,7 @@ PLNR.View.TaskModule = Backbone.View.extend({
 			this.$el.find('.tm-footer__ctabtn').text(timeLength);
 		}
 
-		if(plnrSelect.parent().hasClass('tm-task__block')){
+		if(plnrSelect.parent().hasClass('tm-task')){
 
 			this.projectSelected(selectedValue)
 		}
@@ -507,7 +506,7 @@ PLNR.View.TaskModule = Backbone.View.extend({
 
 	},
 	projectSelected: function(id){
-		var taskBlock = this.$el.find('.tm-task__block .plnr-select__block');
+		var taskBlock = this.$el.find('.tm-task .plnr-select');
 
 		if(id.length > 0 && !(id === 'new-task')){
 
@@ -522,9 +521,9 @@ PLNR.View.TaskModule = Backbone.View.extend({
 			week.text(Utility.calculateMinsToHumanTime(project.hoursThisWeek()));
 
 			taskBlock.removeClass('new-project');
-			this.$el.find('.tm-task-details__block').slideDown('slow');
+			this.$el.find('.tm-task-details').slideDown('slow');
 		}else{
-			this.$el.find('.tm-task-details__block').slideUp();
+			this.$el.find('.tm-task-details').slideUp();
 			var input = this.$el.find('.tm-task-input__input');
 
 			input.attr('data-value','new-project-created');
@@ -533,11 +532,11 @@ PLNR.View.TaskModule = Backbone.View.extend({
 	},
 	cancelNewProject: function(e){
 		e.preventDefault();
-		var taskBlock = this.$el.find('.tm-task__block .plnr-select__block'),
+		var taskBlock = this.$el.find('.tm-task .plnr-select'),
 			input = this.$el.find('.tm-task-input__input');
 
-		this.$el.find('.tm-task__block .plnr-select__selected').attr('data-value', '');
-		this.$el.find('.tm-task__block .plnr-select__selected-text').text('Select a Project');
+		this.$el.find('.tm-task .plnr-select__selected').attr('data-value', '');
+		this.$el.find('.tm-task .plnr-select__selected-text').text('Select a Project');
 
 		taskBlock.removeClass('new-project');
 		input.attr('data-value','no-new-project');
@@ -580,12 +579,12 @@ PLNR.View.TaskModule = Backbone.View.extend({
 		e.preventDefault();
 
 		var rawData = {
-			projectId : this.$el.find('.tm-task__block .plnr-select__selected').attr('data-value'),
+			projectId : this.$el.find('.tm-task .plnr-select__selected').attr('data-value'),
 			startDateTime: this.$el.find('.tm-times__start .plnr-select__selected').attr('data-value'),
 			endDateTime: this.$el.find('.tm-times__end .plnr-select__selected').attr('data-value'),
 			startDate: this.$el.find('#start-date').val(),
 			endDate: this.$el.find('#end-date').val(),
-			newProjectVal: this.$el.find('.tm-task__block .tm-task-input__input').val()
+			newProjectVal: this.$el.find('.tm-task .tm-task-input__input').val()
 		},passCheck = true, entry;
 
 		if(rawData['projectId'].length == 0) {
@@ -711,7 +710,7 @@ PLNR.View.WeekViewOverlayItem = Backbone.View.extend({
 
 // Week View Overlay
 PLNR.View.WeekViewOverlay = Backbone.View.extend({
-	className: 'week-view-overlay__block',
+	className: 'week-view-overlay',
 	initialize: function(){
 		this.listenTo(PLNR.Projects, 'projectChange', this.render);
 		PLNR.APP.on('weekChange', this.render, this);
@@ -740,7 +739,7 @@ PLNR.View.WeekViewOverlay = Backbone.View.extend({
 	},
 	editTaskModule: function(e){
 		var el = $(e.currentTarget),
-			taskId = el.find('.overlay-item__block').attr('data-task-id'),
+			taskId = el.find('.overlay-item').attr('data-task-id'),
 			taskInfo = PLNR.Projects.getTask(taskId);
 
 		//console.log(taskInfo);
@@ -766,7 +765,7 @@ PLNR.View.WeekViewOverlay = Backbone.View.extend({
 // Week View Bg
 PLNR.View.WeekView = Backbone.View.extend({
 	tagName: 'ul',
-	className: 'week-view__block',
+	className: 'week-view',
 	initialize: function(attr){
 		this.config = PLNR.APP;
 		PLNR.APP.on('weekChange', this.render, this);
@@ -785,7 +784,7 @@ PLNR.View.WeekView = Backbone.View.extend({
 				if(dataDay == moment().format('YYYY-D-M')) today = true;
 
 			var day = ['<li class="week-view__day">',
-							'<ul class="single-day__block'+ (today?' __today': '') +'"  data-day="'+ dataDay +'">'];
+							'<ul class="single-day'+ (today?' __today': '') +'"  data-day="'+ dataDay +'">'];
 
 			// create hours
 			for(var h = 0; h < this.config.amountOfHours; h++){
@@ -800,7 +799,7 @@ PLNR.View.WeekView = Backbone.View.extend({
 					if(d == this.config.amountOfDays - 1 && h == this.config.amountOfHours - 1) hourClasses += '  __bottom-right';
 					if(h == 12) hourClasses += '  __noon';
 
-				hour = '<li class="single-day__hour'+ hourClasses +'" data-hour="'+ h +'"> <small class="hour"> &rarr; '+ Utility.toStdTime(h, true) +'</small class="hour">  </li>';
+				hour = '<li class="single-day__hour'+ hourClasses +'" data-hour="'+ h +'"> <small class="hour"> + '+ Utility.toStdTime(h, true) +'</small class="hour">  </li>';
 
 				day.push(hour);
 
@@ -824,7 +823,7 @@ PLNR.View.WeekView = Backbone.View.extend({
 		var config = {
 			day: el.parent().attr('data-day'),
 			hour: el.attr('data-hour'),
-			moduleTitle: 'New Task bruh',
+			moduleTitle: 'Add New Task',
 			moduleType: 'new'
 		}
 
@@ -850,7 +849,7 @@ PLNR.View.WeekDayTitles = Backbone.View.extend({
 	},
 	render: function(){
 		var html = [];
-		html.push('<ul class="week-day-titles__block">');
+		html.push('<ul class="week-day-titles">');
 
 		for(var d = 0; d < this.config.amountOfDays; d++){
 			var m = this.config.startDate(),
@@ -876,7 +875,7 @@ PLNR.View.WeekHours = Backbone.View.extend({
 	render: function(){
 		var html = [];
 
-		html.push('<ul class="view-hours__block">');
+		html.push('<ul class="view-hours">');
 
 		for(var i = 0; i < this.config.amountOfHours; i++){
 			html.push(function(i){
@@ -896,7 +895,7 @@ PLNR.View.WeekHours = Backbone.View.extend({
 // Timebar
 PLNR.View.TimeBar = Backbone.View.extend({
 	id: 'time-bar',
-	className: 'time-bar__block',
+	className: 'time-bar',
 	html : _.template('<div class="time-bar__time"> <%= time %> </div>'),
 	initialize: function(){
 		var self = this;
@@ -935,8 +934,8 @@ PLNR.View.TimeBar = Backbone.View.extend({
 
 // Sidebar Tasks
 PLNR.View.SidebarTask = Backbone.View.extend({
-	html: $('#sidebar-tasks__block--template').html(),
-	className: 'sidebar-tasks__block',
+	html: $('#sidebar-tasks--template').html(),
+	className: 'sidebar-tasks',
 	initialize: function(){
 		this.listenTo(PLNR.Projects, 'projectChange', this.render);
 		//PLNR.APP.on('weekChange', this.render, this);
@@ -951,7 +950,7 @@ PLNR.View.SidebarTask = Backbone.View.extend({
 			graph = this.$el.find('.sidebar-task__graph'),
 				detailList = ['<ul class="sidebar-task__listing">'],
 				projectListHours = [],
-				graphList = ['<ul class="graph-listing__block">'];
+				graphList = ['<ul class="graph-listing">'];
 
 		var projectList = PLNR.Projects.sortBy(function(project){
 			var hours = project.hoursThisWeek();
@@ -1002,7 +1001,7 @@ PLNR.View.SidebarTask = Backbone.View.extend({
 
 // App Cal View
 PLNR.View.AppCalWeekView = Backbone.View.extend({
-	className : 'app-week-view__block',
+	className : 'app-week-view',
 	daysToDisplay : 7,
 	render : function (){
 
